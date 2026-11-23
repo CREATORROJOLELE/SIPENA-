@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SI-PM UPT RSDSN &amp; AMPK MALANG</title>
+<style>
+:root{
+  --rsdsn:#3B6FE0; --rsdsn-dark:#2A55B8; --rsdsn-soft:#E8ECF8; --rsdsn-border:#C9D3F2;
+  --ampk:#1F9D72; --ampk-dark:#157954; --ampk-soft:#E5F3EC; --ampk-border:#BFE3D0;
+  --bg:#F4F6FB; --panel:#FFFFFF; --ink:#1F2937; --ink-soft:#6B7280; --ink-faint:#9CA3AF;
+  --border:#E5E7EB; --border-strong:#D1D5DB; --danger:#DC2626; --warn:#D97706; --ok:#059669;
+  --shadow-sm:0 1px 2px rgba(16,24,40,.06);
+  --shadow:0 4px 14px rgba(16,24,40,.08);
+  --shadow-lg:0 12px 36px rgba(16,24,40,.12);
+  --radius:14px; --radius-sm:8px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;background:#F5F7FB;color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+.hidden{display:none!important}
+
+/* Enhanced logo and branding */
+.landing-logo{max-width:280px;width:70%;height:auto;margin:0 auto 12px;display:block;filter:drop-shadow(0 4px 12px rgba(15,23,42,.1));}
+.sb-brand img{max-width:180px;height:auto;display:block;margin:0 auto 8px;filter:brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,.2));}
+
+/* Mode switcher */
+.mode-switch{display:flex;gap:6px;margin-top:4px}
+.mode-switch button{flex:1;padding:5px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#C9D2E3;font-size:.72rem;font-weight:600;cursor:pointer}
+.mode-switch button.active{background:rgba(59,111,224,.3);color:#fff;border-color:transparent}
+.mode-switch button.ampk.active{background:rgba(31,157,114,.3)}
+
+/* Better buttons and interactions */
+.btn{transition:all .15s ease}
+.btn.primary:active,.btn.success:active{transform:translateY(1px)}
+.choice-card{position:relative;overflow:hidden}
+.choice-card::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.15));opacity:0;transition:opacity .2s}
+.choice-card:hover::after{opacity:1}
+
+/* Refined stats and cards */
+.stat{transition:transform .15s,box-shadow .15s}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.card{transition:box-shadow .2s}
+.card:hover{box-shadow:var(--shadow)}
+
+/* Improved table */
+tbody tr{transition:background .1s}
+
+
+/* ---------- LANDING PAGE ---------- */
+#landing{min-height:100vh;display:flex;flex-direction:column;background:#F7F9FD;position:relative;overflow:hidden}
+#landing::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-45%);width:1100px;height:460px;background:url('logo-sipena.png') center center / contain no-repeat;opacity:.28;pointer-events:none;z-index:0;mix-blend-mode:multiply}
+#landing::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(247,249,253,.15) 0%,rgba(247,249,253,.55) 35%,rgba(247,249,253,.8) 100%);pointer-events:none;z-index:0}
+#landing > *{position:relative;z-index:1}
+.landing-header{padding:34px 24px 10px;text-align:center}
+.landing-header h1{margin:0;font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800;color:#0F172A;letter-spacing:-.02em}
+.landing-header .sub{margin:8px auto 0;max-width:760px;color:var(--ink-soft);font-size:clamp(.85rem,2vw,1rem)}
+.landing-section-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-faint);font-weight:700;margin:18px 0 6px;text-align:center}
+.landing-main{flex:1;display:flex;flex-direction:column;align-items:center;padding:18px 16px 40px}
+.landing-panel{background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.6);border-radius:20px;box-shadow:0 12px 40px rgba(16,24,40,.08);width:100%;max-width:900px;padding:28px}
+.landing-panel-head{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:18px}
+.landing-panel-head .ico{width:18px;height:18px;display:inline-block;background:linear-gradient(135deg,#C7CFE3,#9AA7C7);border-radius:3px}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:640px){.choice-grid{grid-template-columns:1fr}}
+.choice-card{border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:12px;border:2px solid transparent;transition:all .2s ease;cursor:pointer;text-align:left;color:inherit;position:relative;overflow:hidden}
+.choice-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(16,24,40,.12)}
+.choice-card.rsdsn{background:linear-gradient(145deg,#E8ECF8 0%,#F5F8FF 100%);border-color:#C5D4F5}
+.choice-card.ampk{background:linear-gradient(145deg,#E5F3EC 0%,#F4FBF7 100%);border-color:#B8E0CC}
+.choice-card .ci{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.choice-card .ci{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:var(--shadow-sm)}
+.choice-card.rsdsn .ci{color:var(--rsdsn)}
+.choice-card.ampk .ci{color:var(--ampk)}
+.choice-card .ci svg{width:26px;height:26px}
+.choice-card h3{margin:0;font-size:1.4rem;font-weight:800}
+.choice-card.rsdsn h3{color:var(--rsdsn-dark)}
+.choice-card.ampk h3{color:var(--ampk-dark)}
+.choice-card p{margin:0;color:var(--ink-soft);font-size:.92rem}
+.choice-card .cta{margin-top:8px;font-size:.85rem;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.choice-card.rsdsn .cta{color:var(--rsdsn-dark)}
+.choice-card.ampk .cta{color:var(--ampk-dark)}
+.divider{height:1px;background:var(--border);margin:24px 0 18px}
+.menu-list-title{font-weight:700;color:var(--ink);margin-bottom:10px}
+.menu-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 22px}
+@media (max-width:640px){.menu-list{grid-template-columns:1fr}}
+.menu-list li{display:flex;align-items:flex-start;gap:8px;font-size:.9rem;color:var(--ink-soft);padding:2px 0}
+.menu-list li .n{flex:0 0 22px;height:22px;border-radius:50%;background:#EEF1F6;color:var(--ink-soft);font-size:.74rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.landing-foot{padding:14px;text-align:center;color:var(--ink-faint);font-size:.78rem}
+
+/* ---------- MAIN APP ---------- */
+.app{display:grid;grid-template-columns:264px 1fr;min-height:100vh}
+@media (max-width:880px){.app{grid-template-columns:1fr}}
+.sidebar{background:#0F1B33;color:#E6EAF2;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden}
+@media (max-width:880px){.sidebar{position:fixed;left:0;top:0;width:264px;z-index:40;transform:translateX(-100%);transition:transform .25s}.sidebar.open{transform:translateX(0)}}
+.sb-brand{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-brand .b1{font-size:.95rem;font-weight:800;letter-spacing:.02em}
+.sb-brand .b2{font-size:.72rem;color:#9AA6BD;margin-top:2px}
+.sb-mode{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-mode .lbl{font-size:.68rem;color:#9AA6BD;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.mode-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;font-size:.78rem;font-weight:700}
+.mode-chip.rsdsn{background:rgba(59,111,224,.25);color:#AFC4F5}
+.mode-chip.ampk{background:rgba(31,157,114,.25);color:#A6E6CA}
+.mode-chip.all{background:rgba(255,255,255,.12);color:#E6EAF2}
+.mode-chip .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 8px}
+.sb-nav::-webkit-scrollbar{width:6px}.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+.sb-section{font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:#7A8499;padding:12px 10px 6px;font-weight:700}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;color:#C9D2E3;font-size:.88rem;cursor:pointer;transition:background .12s;width:100%;border:none;background:transparent;text-align:left}
+.sb-item:hover{background:rgba(255,255,255,.06)}
+.sb-item.active{background:rgba(59,111,224,.22);color:#fff;font-weight:600}
+.sb-item .num{flex:0 0 22px;font-size:.72rem;color:#7A8499;font-weight:700}
+.sb-item.active .num{color:#AFC4F5}
+.sb-foot{padding:12px 14px;border-top:1px solid rgba(255,255,255,.08);font-size:.72rem;color:#7A8499}
+.sb-foot button{background:transparent;color:#C9D2E3;border:1px solid rgba(255,255,255,.18);padding:6px 12px;border-radius:6px;font-size:.78rem;width:100%;margin-top:8px}
+.sb-foot button:hover{background:rgba(255,255,255,.06)}
+
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px}
+.hamb{display:none;background:transparent;border:1px solid var(--border);border-radius:8px;width:38px;height:38px;align-items:center;justify-content:center}
+@media (max-width:880px){.hamb{display:inline-flex}}
+.topbar .t-title{font-weight:800;font-size:1.05rem;color:var(--ink);display:flex;align-items:center;gap:10px}
+.topbar .t-title .badge{font-size:.7rem;padding:3px 8px;border-radius:999px;font-weight:700}
+.topbar .t-title .badge.rsdsn{background:var(--rsdsn-soft);color:var(--rsdsn-dark)}
+.topbar .t-title .badge.ampk{background:var(--ampk-soft);color:var(--ampk-dark)}
+.topbar .t-title .badge.all{background:#EEF1F6;color:#475569}
+.topbar .spacer{flex:1}
+.topbar .org{font-size:.78rem;color:var(--ink-soft);text-align:right}
+@media (max-width:640px){.topbar .org{display:none}}
+.content{padding:22px;max-width:1180px;width:100%;margin:0 auto}
+@media (max-width:640px){.content{padding:14px}}
+
+.page-head{margin-bottom:18px}
+.page-head h2{margin:0 0 4px;font-size:1.4rem;font-weight:800;color:#0F172A}
+.page-head p{margin:0;color:var(--ink-soft);font-size:.92rem}
+
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:18px;margin-bottom:18px}
+.card-title{font-weight:700;font-size:1rem;color:var(--ink);margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.card-sub{font-size:.84rem;color:var(--ink-soft);margin:0 0 14px}
+
+/* stat grid */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+@media (max-width:880px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.stat-grid{grid-template-columns:1fr}}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm)}
+.stat .lbl{font-size:.78rem;color:var(--ink-soft);font-weight:600}
+.stat .val{font-size:1.9rem;font-weight:800;line-height:1.1;margin-top:6px}
+.stat .delta{font-size:.74rem;color:var(--ink-faint);margin-top:2px}
+.stat.rsdsn{background:var(--rsdsn-soft);border-color:var(--rsdsn-border)}
+.stat.rsdsn .val{color:var(--rsdsn-dark)}
+.stat.ampk{background:var(--ampk-soft);border-color:var(--ampk-border)}
+.stat.ampk .val{color:var(--ampk-dark)}
+.stat.plain .val{color:#0F172A}
+
+/* flow steps */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:880px){.flow{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.flow{grid-template-columns:1fr}}
+.flow-step{position:relative;background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start}
+.flow-step .fn{flex:0 0 26px;height:26px;border-radius:50%;background:#EEF1F6;color:#6B7280;font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+.flow-step .ft{font-size:.84rem;font-weight:600;color:var(--ink);line-height:1.25}
+.flow-step.done{border-color:#BFDBFE;background:#F0F6FF}
+.flow-step.done .fn{background:var(--rsdsn);color:#fff}
+
+/* forms */
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 16px}
+@media (max-width:640px){.form-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:.82rem;font-weight:600;color:#374151}
+.field .req{color:var(--danger)}
+.field input,.field select,.field textarea{font-family:inherit;font-size:.9rem;padding:9px 11px;border:1px solid var(--border-strong);border-radius:8px;background:#fff;color:var(--ink);width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid #B9CCF5;border-color:var(--rsdsn);background:#FAFBFF}
+.field textarea{resize:vertical;min-height:70px}
+.field .hint{font-size:.74rem;color:var(--ink-faint)}
+.field.inline{flex-direction:row;align-items:center;gap:8px}
+.field.inline label{margin:0}
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid transparent;border-radius:8px;padding:9px 16px;font-size:.88rem;font-weight:600;background:#fff;color:var(--ink);transition:background .12s,box-shadow .12s}
+.btn svg{width:16px;height:16px}
+.btn:hover{box-shadow:var(--shadow-sm)}
+.btn.primary{background:var(--rsdsn);color:#fff}
+.btn.primary:hover{background:var(--rsdsn-dark)}
+.btn.success{background:var(--ampk);color:#fff}
+.btn.success:hover{background:var(--ampk-dark)}
+.btn.ghost{background:transparent;border-color:var(--border-strong);color:var(--ink-soft)}
+.btn.danger{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5;font-weight:600}
+.btn.danger:hover{background:#FEF2F2}
+.btn.sm{padding:6px 11px;font-size:.8rem}
+
+/* table */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:600px}
+thead th{background:#F8FAFC;text-align:left;padding:10px 12px;font-weight:700;color:#374151;border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0}
+tbody td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--ink)}
+tbody td.num{white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
+tbody tr:hover{background:#F8FAFC}
+tbody tr:last-child td{border-bottom:none}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:.74rem;font-weight:600}
+.tag.rsdsn{background:var(--rsdsn-soft);color:var(--rsdsn-dark)}
+.tag.ampk{background:var(--ampk-soft);color:var(--ampk-dark)}
+.tag.gray{background:#EEF1F6;color:#475569}
+.tag.warn{background:#FEF3C7;color:#92400E}
+.tag.ok{background:#D1FAE5;color:#065F46}
+.tag.bad{background:#FEE2E2;color:#991B1B}
+.tag.blue{background:#DBEAFE;color:#1E40AF}
+
+.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.toolbar .search{flex:1;min-width:180px;position:relative}
+.toolbar .search input{width:100%;padding:9px 11px 9px 34px;border:1px solid var(--border-strong);border-radius:8px;font-size:.88rem;font-family:inherit}
+.toolbar .search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink-faint)}
+.toolbar select{padding:9px 11px;border:1px solid var(--border-strong);border-radius:8px;font-size:.88rem;font-family:inherit;background:#fff}
+
+/* comparison table */
+.compare{width:100%;border-collapse:collapse}
+.compare th,.compare td{padding:14px 16px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+.compare th{font-weight:700;color:#374151;background:#F8FAFC;font-size:.86rem}
+.compare td:first-child{font-weight:600;color:#374151;width:22%}
+.compare .col-rsdsn{background:rgba(232,236,248,.4)}
+.compare .col-ampk{background:rgba(229,243,236,.4)}
+.compare th.col-rsdsn{color:var(--rsdsn-dark);background:var(--rsdsn-soft)}
+.compare th.col-ampk{color:var(--ampk-dark);background:var(--ampk-soft)}
+
+/* detail view */
+.detail-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.detail-head .av{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;color:#fff;flex:0 0 auto}
+.detail-head .av.rsdsn{background:var(--rsdsn)}
+.detail-head .av.ampk{background:var(--ampk)}
+.detail-head h3{margin:0;font-size:1.2rem;font-weight:800}
+.detail-head .meta{color:var(--ink-soft);font-size:.84rem;margin-top:2px}
+
+/* stepper */
+.stepper{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.stepper .sp{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;font-size:.76rem;background:#F1F4F9;color:var(--ink-soft)}
+.stepper .sp .n{width:18px;height:18px;border-radius:50%;background:#CBD5E1;color:#fff;font-size:.66rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.stepper .sp.done{background:#DBEAFE;color:#1E40AF}
+.stepper .sp.done .n{background:var(--rsdsn)}
+.stepper .sp.ampk.done{background:#D1FAE5;color:#065F46}
+.stepper .sp.ampk.done .n{background:var(--ampk)}
+.stepper .sp.current{background:#0F172A;color:#fff}
+.stepper .sp.current .n{background:#fff;color:#0F172A}
+
+/* badges inline */
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 18px;font-size:.88rem}
+@media (max-width:480px){.kv{grid-template-columns:1fr}}
+.kv .k{color:var(--ink-soft)}
+.kv .v{color:var(--ink);font-weight:600}
+
+.empty{text-align:center;padding:36px 16px;color:var(--ink-faint)}
+.empty svg{width:48px;height:48px;opacity:.5;margin-bottom:8px}
+
+/* toast */
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:80;background:#0F172A;color:#fff;padding:11px 18px;border-radius:8px;font-size:.86rem;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+
+/* backdrop for mobile sidebar */
+.backdrop{position:fixed;inset:0;background:rgba(15,27,51,.4);z-index:39;display:none}
+.backdrop.show{display:block}
+@media(min-width:881px){.backdrop{display:none!important}}
+
+/* utility */
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--ink-soft)}
+.small{font-size:.8rem}
+.right{text-align:right}
+.mt0{margin-top:0}
+.print-only{display:none}
+@media print{
+  .sidebar,.topbar,.btn,.hamb,.backdrop,#toast{display:none!important}
+  .app{display:block}
+  .content{padding:0;max-width:100%}
+  .card{box-shadow:none;break-inside:avoid}
+  .print-only{display:block}
+}
+</style>
+</head>
+<body>
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(165deg,#F0F4FF,#E8F5F0)">
+  <div class="landing-panel" style="max-width:420px;width:90%">
+    <div style="text-align:center;margin-bottom:18px">
+      <img src="logo-sipena.png" alt="SIPENA" style="max-width:200px;height:auto;margin:0 auto 8px">
+      <h2 style="margin:0">Masuk SIPENA</h2>
+      <p class="small muted">UPT RSDSN & AMPK Malang</p>
+    </div>
+    <form onsubmit="doLogin(event)">
+      <div class="field"><label>Username</label><input type="text" name="username" required placeholder="admin" autocomplete="username"></div>
+      <div class="field" style="margin-top:10px"><label>Password</label><input type="password" name="password" required placeholder="admin123" autocomplete="current-password"></div>
+      <div class="form-actions" style="justify-content:stretch"><button type="submit" class="btn primary" style="width:100%;justify-content:center">Masuk</button></div>
+    </form>
+    <p class="small muted" style="text-align:center;margin-top:14px">Default: admin / admin123</p>
+    <p style="text-align:center;margin-top:8px"><a href="#" onclick="showForgotPassword();return false" style="color:var(--rsdsn);font-size:.85rem">Lupa Password?</a></p>
+  </div>
+</div>
+<div id="forgotScreen" class="hidden" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(165deg,#F0F4FF,#E8F5F0)">
+  <div class="landing-panel" style="max-width:420px;width:90%">
+    <h2 style="margin:0 0 12px;text-align:center">Lupa Password</h2>
+    <p class="small muted" style="text-align:center;margin-bottom:14px">Masukkan username. Password baru akan ditampilkan (demo).</p>
+    <form onsubmit="doForgotPassword(event)">
+      <div class="field"><label>Username</label><input type="text" name="username" required placeholder="admin"></div>
+      <div class="form-actions" style="justify-content:stretch">
+        <button type="button" class="btn ghost" onclick="hideForgotPassword()" style="flex:1">Batal</button>
+        <button type="submit" class="btn primary" style="flex:1">Reset Password</button>
+      </div>
+    </form>
+    <div id="forgotResult" class="hidden" style="margin-top:14px;padding:12px;background:#F0FDF4;border-radius:8px;text-align:center"></div>
+  </div>
+</div>
+
+<!-- ================= LANDING ================= -->
+<div id="landing" class="hidden">
+  <div class="landing-header">
+    <!-- logo as background watermark -->
+    <h1>SISTEM INFORMASI PENERIMAAN PM</h1>
+    <p class="sub">UPT Rehabilitasi Sosial Bina Netra dan Anak Memerlukan Perlindungan Khusus Malang<br>Dinas Sosial Provinsi Jawa Timur</p>
+    <div class="landing-section-title">Pilih Layanan</div>
+  </div>
+
+  <div class="landing-main">
+    <div class="landing-panel">
+      <div class="landing-panel-head"><span class="ico"></span> Dashboard utama</div>
+      <div class="choice-grid">
+        <button class="choice-card rsdsn" onclick="enterApp('RSDSN')">
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <h3>RSDSN</h3>
+          <p>Penerima Manfaat Disabilitas Netra</p>
+          <span class="cta">Masuk &rarr;</span>
+        </button>
+        <button class="choice-card ampk" onclick="enterApp('AMPK')">
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <h3>AMPK</h3>
+          <p>Anak Memerlukan Perlindungan Khusus</p>
+          <span class="cta">Masuk &rarr;</span>
+        </button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="menu-list-title">Fitur Utama Aplikasi</div>
+      <ul class="menu-list">
+        <li><span class="n">1</span> Dashboard jumlah PM RSDSN dan AMPK</li>
+        <li><span class="n">2</span> Pendaftaran calon PM</li>
+        <li><span class="n">3</span> Data identitas calon PM</li>
+        <li><span class="n">4</span> Penerimaan dan verifikasi administrasi</li>
+        <li><span class="n">5</span> Identifikasi calon PM</li>
+        <li><span class="n">6</span> Asesmen calon PM</li>
+        <li><span class="n">7</span> Seleksi dan rekomendasi</li>
+        <li><span class="n">8</span> Penetapan penerimaan</li>
+        <li><span class="n">9</span> Registrasi PM</li>
+        <li><span class="n">10</span> Kontrak pelayanan</li>
+        <li><span class="n">11</span> Orientasi dan penempatan</li>
+        <li><span class="n">12</span> Laporan penerimaan PM</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="landing-foot">
+    SIPENA &middot; Sistem Informasi Penerimaan dan Pelayanan Penerima Manfaat &middot; UPT RSDSN & AMPK Malang &middot; &copy; 2026 Dinas Sosial Provinsi Jawa Timur
+  </div>
+</div>
+
+<!-- ================= MAIN APP ================= -->
+<div id="app" class="app hidden">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="b1">SI-PM</div>
+      <div class="b2">UPT RSDSN &amp; AMPK MALANG</div>
+    </div>
+    <div class="sb-mode">
+      <div class="lbl">Mode Layanan</div>
+      <span id="modeChip" class="mode-chip rsdsn"><span class="dot"></span> RSDSN</span>
+    </div>
+    <nav class="sb-nav" id="sbNav">
+      <div class="sb-section">Penerimaan PM</div>
+      <button class="sb-item active" data-view="dashboard"><span class="num">1</span> Dashboard PM</button>
+      <button class="sb-item" data-view="pendaftaran"><span class="num">2</span> Pendaftaran calon PM</button>
+      <button class="sb-item" data-view="identitas"><span class="num">3</span> Data identitas calon PM</button>
+      <button class="sb-item" data-view="verifikasi"><span class="num">4</span> Verifikasi administrasi</button>
+      <button class="sb-item" data-view="identifikasi"><span class="num">5</span> Identifikasi calon PM</button>
+      <button class="sb-item" data-view="asesmen"><span class="num">6</span> Asesmen calon PM</button>
+      <button class="sb-item" data-view="seleksi"><span class="num">7</span> Seleksi dan rekomendasi</button>
+      <button class="sb-item" data-view="penetapan"><span class="num">8</span> Penetapan penerimaan</button>
+      <button class="sb-item" data-view="registrasi"><span class="num">9</span> Registrasi PM</button>
+      <button class="sb-item" data-view="kontrak"><span class="num">10</span> Kontrak pelayanan</button>
+      <button class="sb-item" data-view="orientasi"><span class="num">11</span> Orientasi dan penempatan</button>
+      <div class="sb-section">Pelaporan</div>
+      <button class="sb-item" data-view="laporan"><span class="num">12</span> Laporan penerimaan PM</button>
+      <div class="sb-section">Formulir</div>
+      <button class="sb-item" data-view="formulir"><span class="num">F</span> Formulir Layanan</button>
+      <div class="sb-section">Kepegawaian</div>
+      <button class="sb-item" data-view="pegawai"><span class="num">P</span> Data Pegawai</button>
+      <div class="sb-section">Pengaturan</div>
+      <button class="sb-item" data-view="settings"><span class="num">⚙</span> Setting User & Password</button>
+      <button class="sb-item" data-view="roles"><span class="num">R</span> Manajemen Role</button>
+      <button class="sb-item" data-view="users"><span class="num">U</span> Manajemen User</button>
+      <button class="sb-item" data-view="approvals"><span class="num">A</span> Approval</button>
+    </nav>
+    <div class="sb-foot">
+      <div>Petugas: <span id="petugasName">Admin Penerimaan</span></div>
+      <div class="small" style="margin-top:4px">Role: <span id="roleName">Admin</span></div>
+      <button onclick="setView('settings')">Setting User</button>
+      <button onclick="doLogout()">Keluar (Logout)</button>
+      <button onclick="goLanding()">&larr; Kembali ke Landing</button>
+    </div>
+  </aside>
+
+  <div class="backdrop" id="backdrop" onclick="toggleSidebar(false)"></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="hamb" onclick="toggleSidebar(true)" aria-label="Menu">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="t-title">
+        <span id="topTitle">Dashboard PM</span>
+        <span id="topBadge" class="badge rsdsn">RSDSN</span>
+      </div>
+      <div class="spacer"></div>
+      <div class="org">Dinas Sosial Provinsi Jawa Timur<br><span class="small muted">UPT RSDSN &amp; AMPK Malang</span></div>
+    </header>
+
+    <main class="content" id="content"></main>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   SI-PM UPT RSDSN & AMPK MALANG
+   Sistem Informasi Penerimaan dan Pelayanan Penerima Manfaat
+   Single-file app. Data persist on localStorage.
+   ============================================================ */
+
+const STORAGE_KEY = 'sipm_data_v1';
+const MODE_KEY = 'sipm_mode_v1';
+const USER_KEY = 'sipm_user_v1';
+
+// Safe storage wrapper (works even when localStorage is blocked by sandbox)
+const memoryStore = {};
+const safeStorage = {
+  getItem(key){
+    try{ return window.localStorage.getItem(key); }catch(e){ return memoryStore[key] ?? null; }
+  },
+  setItem(key, val){
+    try{ window.localStorage.setItem(key, val); }catch(e){ memoryStore[key] = val; }
+  },
+  removeItem(key){
+    try{ window.localStorage.removeItem(key); }catch(e){ delete memoryStore[key]; }
+  }
+};
+const RS = '#3B6FE0', AM = '#1F9D72';
+
+let MODE = safeStorage.getItem(MODE_KEY) || 'RSDSN';
+let data = loadData();
+let currentView = 'dashboard';
+let currentPMId = null;
+let filterState = {q:'', status:'all'};
+
+const MENU = [
+  {id:'dashboard', n:'1', label:'Dashboard PM'},
+  {id:'pendaftaran', n:'2', label:'Pendaftaran calon PM'},
+  {id:'identitas', n:'3', label:'Data identitas calon PM'},
+  {id:'verifikasi', n:'4', label:'Verifikasi administrasi'},
+  {id:'identifikasi', n:'5', label:'Identifikasi calon PM'},
+  {id:'asesmen', n:'6', label:'Asesmen calon PM'},
+  {id:'seleksi', n:'7', label:'Seleksi dan rekomendasi'},
+  {id:'penetapan', n:'8', label:'Penetapan penerimaan'},
+  {id:'registrasi', n:'9', label:'Registrasi PM'},
+  {id:'kontrak', n:'10', label:'Kontrak pelayanan'},
+  {id:'orientasi', n:'11', label:'Orientasi dan penempatan'},
+  {id:'laporan', n:'12', label:'Laporan penerimaan PM'},
+  {id:'formulir', n:'F', label:'Formulir Layanan'},
+  {id:'pegawai', n:'P', label:'Data Pegawai'},
+  {id:'settings', n:'⚙', label:'Setting User & Password'},
+  {id:'roles', n:'R', label:'Manajemen Role'},
+  {id:'users', n:'U', label:'Manajemen User'},
+  {id:'approvals', n:'A', label:'Approval'}
+];
+
+const FLOW8 = [
+  'Pendaftaran calon PM',
+  'Verifikasi administrasi',
+  'Identifikasi',
+  'Asesmen',
+  'Seleksi dan rekomendasi',
+  'Penetapan penerimaan',
+  'Registrasi dan kontrak pelayanan',
+  'Orientasi dan penempatan'
+];
+
+// Statusses mapped to flow position (1..8). 'ditolak' is special.
+const STATUS_ORDER = ['terdaftar','terverifikasi','teridentifikasi','terasesmen','terseleksi','ditetapkan','teregistrasi','terkontrak','terorientasi'];
+const STATUS_LABEL = {
+  terdaftar:'Terdaftar', terverifikasi:'Terverifikasi', teridentifikasi:'Teridentifikasi',
+  terasesmen:'Terasesmen', terseleksi:'Terseleksi', ditetapkan:'Ditetapkan',
+  teregistrasi:'Teregistrasi', terkontrak:'Kontrak disusun', terorientasi:'Ditempatkan',
+  ditolak:'Ditolak'
+};
+const STATUS_TAG = {
+  terdaftar:'gray', terverifikasi:'blue', teridentifikasi:'blue',
+  terasesmen:'warn', terseleksi:'warn', ditetapkan:'ok',
+  teregistrasi:'ok', terkontrak:'ok', terorientasi:'ok',
+  ditolak:'bad'
+};
+
+function statusRank(s){
+  if(s==='ditolak') return -1;
+  return STATUS_ORDER.indexOf(s);
+}
+
+/* ---------- DATA ---------- */
+function loadData(){
+  try{
+    const raw = safeStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  const seed = seedData();
+  safeStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+  return seed;
+}
+function saveData(){ safeStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+function loadUser(){
+  try{ const u = JSON.parse(safeStorage.getItem(USER_KEY)||'null'); if(u&&u.nama) return u; }catch(e){}
+  return {nama:'Admin Penerimaan', password:'admin123'};
+}
+function saveUser(u){ safeStorage.setItem(USER_KEY, JSON.stringify(u)); }
+let currentUser = loadUser();
+
+function seedData(){
+  const now = new Date();
+  const y = now.getFullYear();
+  const samples = [
+    {
+      id:'PM-2026-001', jenis:'RSDSN', nomorPendaftaran:'REG-2026-001', status:'terorientasi',
+      tanggalPendaftaran:'2026-09-12',
+      identitas:{namaLengkap:'Sutarman', nik:'3508010101800001', tempatLahir:'Malang', tanggalLahir:'1980-01-01', jenisKelamin:'Laki-laki', agama:'Islam', pendidikan:'SLTA', pekerjaan:'Tidak Bekerja', alamat:'Jl. Mawar No. 12, Kedungkandang, Malang', telepon:'081234560001', namaWali:'Siti Aminah', hubunganWali:'Ibu', alamatWali:'Jl. Mawar No. 12, Kedungkandang, Malang'},
+      verifikasi:{status:'lengkap', berkas:[{n:'KTP',ada:true},{n:'KK',ada:true},{n:'Surat Keterangan Disabilitas',ada:true},{n:'Pas Foto',ada:true}], catatan:'Berkas lengkap dan valid.'},
+      identifikasi:{jenisKetunanetra:'Buta total', penyebab:'Kongenital', durasi:'40 tahun', riwayatMedis:'Tidak ada riwayat trauma, disabilitas sejak lahir.'},
+      asesmen:{fisik:'Kondisi umum baik, tidak ada komorbid.', sosial:'Dukungan keluarga memadai, tinggal dengan ibu.', psikologis:'Motivasi rehabilitasi tinggi, emosi stabil.', fungsional:'Kemandirian aktivitas dasar terbatas, butuh bantuan orientasi mobilitas.'},
+      seleksi:{hasil:'direkomendasikan', rekomendasi:'Program rehabilitasi netra', catatan:'Direkomendasikan mengikuti program BRM (Bina Ruang Mobilisasi).'},
+      penetapan:{keputusan:'diterima', tanggalKeputusan:'2026-09-25', nomorSK:'070/SK/RSDSN/IX/2026', catatan:'Diterima sebagai Penerima Manfaat RSDSN.'},
+      registrasi:{nomorRegistrasi:'PM-RSDSN-2026-001', tanggalRegistrasi:'2026-09-26', petugas:'Rina Wulandari, S.Sos'},
+      kontrak:{nomorKontrak:'KTR/RSDSN/2026/001', tanggalMulai:'2026-10-01', tanggalSelesai:'2027-03-31', jenisLayanan:'Rehabilitasi netra (6 bulan)', penanggungJawab:'Bambang S., S.Sos'},
+      orientasi:{tanggalMulai:'2026-10-02', tanggalSelesai:'2026-10-09', lokasiPenempatan:'Asrama RSDSN Blok A', program:'Program rehabilitasi netra', catatan:'Mengikuti orientasi mobilitas dan aktivitas kehidupan sehari-hari.'}
+    },
+    {
+      id:'PM-2026-002', jenis:'AMPK', nomorPendaftaran:'REG-2026-002', status:'terverifikasi',
+      tanggalPendaftaran:'2026-11-04',
+      identitas:{namaLengkap:'Andi Pratama', nik:'3508014567230002', tempatLahir:'Malang', tanggalLahir:'2014-05-23', jenisKelamin:'Laki-laki', agama:'Islam', pendidikan:'SD Kelas 4', pekerjaan:'Pelajar', alamat:'Jl. Melati No. 8, Lowokwaru, Malang', telepon:'081234560002', namaWali:'Dewi Lestari', hubunganWali:'Ibu Kandung', alamatWali:'Jl. Melati No. 8, Lowokwaru, Malang'},
+      verifikasi:{status:'lengkap', berkas:[{n:'Akta Kelahiran',ada:true},{n:'KK',ada:true},{n:'Surat Keterangan Kasus dari P2TP2A',ada:true},{n:'Pas Foto',ada:true}], catatan:'Berkas lengkap, kasus diverifikasi P2TP2A.'},
+      identifikasi:{jenisKasus:'Kekerasan dalam rumah tangga', tingkatRisiko:'Tinggi', sumberRujukan:'P2TP2A Malang', riwayatKasus:'Korban kekerasan fisik oleh anggota keluarga, butuh perlindungan sementara.'},
+      asesmen:{psikologis:'Tingkat kecemasan tinggi, gejala trauma, butuh pendampingan psikolog.', sosial:'Pendukung sosial terbatas, perlu pemulihan relasi.', keluarga:'Keluarga inti tidak aman, butuh lingkungan pengganti.', perlindungan:'Rencana perlindungan terpadu disusun.'},
+      seleksi:{hasil:'', rekomendasi:'', catatan:''},
+      penetapan:{keputusan:'', tanggalKeputusan:'', nomorSK:'', catatan:''},
+      registrasi:{nomorRegistrasi:'', tanggalRegistrasi:'', petugas:''},
+      kontrak:{nomorKontrak:'', tanggalMulai:'', tanggalSelesai:'', jenisLayanan:'', penanggungJawab:''},
+      orientasi:{tanggalMulai:'', tanggalSelesai:'', lokasiPenempatan:'', program:'', catatan:''}
+    },
+    {
+      id:'PM-2026-003', jenis:'RSDSN', nomorPendaftaran:'REG-2026-003', status:'terdaftar',
+      tanggalPendaftaran:'2026-11-18',
+      identitas:{namaLengkap:'Sri Wahyuni', nik:'3508010202900003', tempatLahir:'Batu', tanggalLahir:'1990-02-02', jenisKelamin:'Perempuan', agama:'Islam', pendidikan:'SLTA', pekerjaan:'Tidak Bekerja', alamat:'Jl. Anggur No. 5, Batu, Malang', telepon:'081234560003', namaWali:'Joko Susilo', hubunganWali:'Suami', alamatWali:'Jl. Anggur No. 5, Batu'},
+      verifikasi:{status:'belum_lengkap', berkas:[{n:'KTP',ada:true},{n:'KK',ada:true},{n:'Surat Keterangan Disabilitas',ada:false},{n:'Pas Foto',ada:true}], catatan:'Surat keterangan disabilitas belum dilampirkan.'},
+      identifikasi:{jenisKetunanetra:'', penyebab:'', durasi:'', riwayatMedis:''},
+      asesmen:{fisik:'', sosial:'', psikologis:'', fungsional:''},
+      seleksi:{hasil:'', rekomendasi:'', catatan:''},
+      penetapan:{keputusan:'', tanggalKeputusan:'', nomorSK:'', catatan:''},
+      registrasi:{nomorRegistrasi:'', tanggalRegistrasi:'', petugas:''},
+      kontrak:{nomorKontrak:'', tanggalMulai:'', tanggalSelesai:'', jenisLayanan:'', penanggungJawab:''},
+      orientasi:{tanggalMulai:'', tanggalSelesai:'', lokasiPenempatan:'', program:'', catatan:''}
+    },
+    {
+      id:'PM-2026-004', jenis:'AMPK', nomorPendaftaran:'REG-2026-004', status:'teridentifikasi',
+      tanggalPendaftaran:'2026-11-10',
+      identitas:{namaLengkap:'Rina Marlina', nik:'3508017890120004', tempatLahir:'Malang', tanggalLahir:'2011-08-15', jenisKelamin:'Perempuan', agama:'Islam', pendidikan:'SD Kelas 5', pekerjaan:'Pelajar', alamat:'Jl. Kenanga No. 3, Klojen, Malang', telepon:'081234560004', namaWali:'Tutik Rahayu', hubunganWali:'Nenek', alamatWali:'Jl. Kenanga No. 3, Klojen'},
+      verifikasi:{status:'lengkap', berkas:[{n:'Akta Kelahiran',ada:true},{n:'KK',ada:true},{n:'Surat Keterangan Kasus',ada:true},{n:'Pas Foto',ada:true}], catatan:'Berkas lengkap.'},
+      identifikasi:{jenisKasus:'Anak terlantar', tingkatRisiko:'Sedang', sumberRujukan:'Kelurahan setempat', riwayatKasus:'Orang tua tidak mampu merawat, dirujuk untuk perlindungan.'},
+      asesmen:{psikologis:'', sosial:'', keluarga:'', perlindungan:''},
+      seleksi:{hasil:'', rekomendasi:'', catatan:''},
+      penetapan:{keputusan:'', tanggalKeputusan:'', nomorSK:'', catatan:''},
+      registrasi:{nomorRegistrasi:'', tanggalRegistrasi:'', petugas:''},
+      kontrak:{nomorKontrak:'', tanggalMulai:'', tanggalSelesai:'', jenisLayanan:'', penanggungJawab:''},
+      orientasi:{tanggalMulai:'', tanggalSelesai:'', lokasiPenempatan:'', program:'', catatan:''}
+    },
+    {
+      id:'PM-2026-005', jenis:'RSDSN', nomorPendaftaran:'REG-2026-005', status:'terasesmen',
+      tanggalPendaftaran:'2026-11-06',
+      identitas:{namaLengkap:'Hartono', nik:'3508010505700005', tempatLahir:'Malang', tanggalLahir:'1970-05-05', jenisKelamin:'Laki-laki', agama:'Islam', pendidikan:'SLTP', pekerjaan:'Pensiunan', alamat:'Jl. Cempaka No. 9, Sukun, Malang', telepon:'081234560005', namaWali:'Hartini', hubunganWali:'Istri', alamatWali:'Jl. Cempaka No. 9, Sukun'},
+      verifikasi:{status:'lengkap', berkas:[{n:'KTP',ada:true},{n:'KK',ada:true},{n:'Surat Keterangan Disabilitas',ada:true},{n:'Pas Foto',ada:true}], catatan:'Lengkap.'},
+      identifikasi:{jenisKetunanetra:'Low vision', penyebab:'Penyakit (glaukoma)', durasi:'3 tahun', riwayatMedis:'Glaukoma terminal, penglihatan sangat terbatas.'},
+      asesmen:{fisik:'Usia 56 tahun, komorbid hipertensi terkontrol.', sosial:'Dukungan istri baik.', psikologis:'Adaptif, motivasi sedang.', fungsional:'Masih dapat aktivitas dengan bantuan alat bantu penglihatan.'},
+      seleksi:{hasil:'', rekomendasi:'', catatan:''},
+      penetapan:{keputusan:'', tanggalKeputusan:'', nomorSK:'', catatan:''},
+      registrasi:{nomorRegistrasi:'', tanggalRegistrasi:'', petugas:''},
+      kontrak:{nomorKontrak:'', tanggalMulai:'', tanggalSelesai:'', jenisLayanan:'', penanggungJawab:''},
+      orientasi:{tanggalMulai:'', tanggalSelesai:'', lokasiPenempatan:'', program:'', catatan:''}
+    }
+  ];
+  return {pm: samples};
+}
+
+function genId(){
+  const y = new Date().getFullYear();
+  const num = (data.pm.filter(p=>p.id.startsWith('PM-'+y)).length + 1 + 100).toString().padStart(3,'0').slice(-3);
+  return 'PM-'+y+'-'+num;
+}
+function genReg(jenis){
+  const y = new Date().getFullYear();
+  const cnt = data.pm.filter(p=>p.jenis===jenis).length+1;
+  return 'REG-'+y+'-'+cnt.toString().padStart(3,'0');
+}
+
+function listPM(){
+  return data.pm.filter(p => MODE==='ALL' ? true : p.jenis===MODE);
+}
+function getPM(id){ return data.pm.find(p=>p.id===id); }
+
+/* ---------- NAVIGATION ---------- */
+function enterApp(mode){
+  MODE = mode;
+  safeStorage.setItem(MODE_KEY, mode);
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  setView('dashboard');
+}
+function goLanding(){
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('landing').classList.remove('hidden');
+}
+function setView(view, pmId){
+  currentView = view;
+  if(pmId) currentPMId = pmId;
+  document.querySelectorAll('.sb-item').forEach(b=>{
+    b.classList.toggle('active', b.dataset.view===view);
+  });
+  const menu = MENU.find(m=>m.id===view);
+  document.getElementById('topTitle').textContent = menu ? menu.label : 'SI-PM';
+  const badge = document.getElementById('topBadge');
+  badge.className = 'badge ' + (MODE==='RSDSN'?'rsdsn':MODE==='AMPK'?'ampk':'all');
+  badge.textContent = MODE==='ALL'?'SEMUA':MODE;
+  const chip = document.getElementById('modeChip');
+  chip.className = 'mode-chip ' + (MODE==='RSDSN'?'rsdsn':MODE==='AMPK'?'ampk':'all');
+  chip.innerHTML = '<span class="dot"></span> ' + (MODE==='ALL'?'SEMUA':MODE);
+  // Update mode switch buttons
+  document.querySelectorAll('.mode-switch button').forEach(btn => {
+    const id = btn.id;
+    const isActive = (id==='ms-rsdsn' && MODE==='RSDSN') || (id==='ms-ampk' && MODE==='AMPK') || (id==='ms-all' && MODE==='ALL');
+    btn.classList.toggle('active', isActive);
+    if(id==='ms-ampk') btn.classList.toggle('ampk', true);
+  });
+  // Refresh petugas name
+  const pn = document.getElementById('petugasName');
+  if(pn) pn.textContent = currentUser.nama || 'Admin Penerimaan';
+  render();
+  if(window.innerWidth <= 880) toggleSidebar(false);
+  document.getElementById('content').scrollTo(0,0);
+  window.scrollTo(0,0);
+}
+function toggleSidebar(open){
+  document.getElementById('sidebar').classList.toggle('open', open);
+  document.getElementById('backdrop').classList.toggle('show', open);
+}
+
+/* ---------- RENDER ROUTER ---------- */
+function render(){
+  const c = document.getElementById('content');
+  const v = currentView;
+  if(v==='dashboard') c.innerHTML = viewDashboard();
+  else if(v==='pendaftaran') c.innerHTML = viewPendaftaran();
+  else if(v==='identitas') c.innerHTML = viewIdentitas();
+  else if(v==='verifikasi') c.innerHTML = viewVerifikasi();
+  else if(v==='identifikasi') c.innerHTML = viewIdentifikasi();
+  else if(v==='asesmen') c.innerHTML = viewAsesmen();
+  else if(v==='seleksi') c.innerHTML = viewSeleksi();
+  else if(v==='penetapan') c.innerHTML = viewPenetapan();
+  else if(v==='registrasi') c.innerHTML = viewRegistrasi();
+  else if(v==='kontrak') c.innerHTML = viewKontrak();
+  else if(v==='orientasi') c.innerHTML = viewOrientasi();
+  else if(v==='laporan') c.innerHTML = viewLaporan();
+  else if(v==='formulir') c.innerHTML = viewFormulir();
+  else if(v==='pegawai') c.innerHTML = viewPegawai();
+  else if(v==='settings') c.innerHTML = viewSettings();
+  else if(v==='roles') c.innerHTML = viewRoles();
+  else if(v==='users') c.innerHTML = viewUsers();
+  else if(v==='approvals') c.innerHTML = viewApprovals();
+  else c.innerHTML = '<p>Halaman tidak ditemukan.</p>';
+}
+
+/* ---------- HELPERS ---------- */
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function fmtDate(s){if(!s)return '-';const p=s.split('-');if(p.length<3)return s;return p[2]+'/'+p[1]+'/'+p[0];}
+function age(b){if(!b)return '-';const d=new Date(b),n=new Date();let a=n.getFullYear()-d.getFullYear();const m=n.getMonth()-d.getMonth();if(m<0||(m===0&&n.getDate()<d.getDate()))a--;return a+' th';}
+function initials(name){if(!name)return '?';const p=name.trim().split(/\s+/);return (p[0][0]||'?')+(p[1]?p[1][0]:'');}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+
+function filterPMByStatus(list, minRank){
+  return list.filter(p => statusRank(p.status) >= minRank && p.status!=='ditolak');
+}
+
+function statsCard(label, value, cls, delta){
+  return `<div class="stat ${cls}"><div class="lbl">${label}</div><div class="val">${value}</div>${delta?`<div class="delta">${delta}</div>`:''}</div>`;
+}
+
+/* ---------- VIEWS ---------- */
+
+function viewDashboard(){
+  // Dashboard is a unified overview: always shows both RSDSN & AMPK counts.
+  const list = data.pm;
+  const rsdsn = list.filter(p=>p.jenis==='RSDSN');
+  const ampk = list.filter(p=>p.jenis==='AMPK');
+  const proses = list.filter(p=>p.status!=='ditolak' && statusRank(p.status) < 5);
+  const diterima = list.filter(p=>['ditetapkan','teregistrasi','terkontrak','terorientasi'].includes(p.status));
+  const tolak = list.filter(p=>p.status==='ditolak');
+
+  // flow step completion counts
+  const flowCount = (minRank)=>list.filter(p=>statusRank(p.status)>=minRank && p.status!=='ditolak').length;
+
+  return `
+  <div class="page-head"><h2>Dashboard Penerimaan PM</h2><p>Ringkasan status penerimaan Penerima Manfaat UPT RSDSN &amp; AMPK Malang &mdash; tampilan gabungan kedua layanan${MODE!=='ALL'?' (mode aktif: '+MODE+' untuk pengisian data)':'.'}.</p></div>
+
+  <div class="stat-grid">
+    ${statsCard('Calon PM RSDSN', rsdsn.length, 'rsdsn', MODE==='ALL'||MODE==='RSDSN'?'terdaftar & aktif':'')}
+    ${statsCard('Calon PM AMPK', ampk.length, 'ampk', MODE==='ALL'||MODE==='AMPK'?'terdaftar & aktif':'')}
+    ${statsCard('Dalam proses', proses.length, 'plain', 'belum/selesai seleksi')}
+    ${statsCard('Sudah diterima', diterima.length, 'plain', 'ditetapkan &amp; setelahnya')}
+  </div>
+
+  <div class="card">
+    <p class="card-title">Alur penerimaan terpadu</p>
+    <p class="card-sub">Delapan tahap penerimaan PM berlaku untuk RSDSN dan AMPK dengan substansi berbeda (lihat tabel fitur khusus).</p>
+    <div class="flow">
+      ${FLOW8.map((s,i)=>`<div class="flow-step ${flowCount(i+1)>0?'done':''}"><div class="fn">${i+1}</div><div class="ft">${s}</div></div>`).join('')}
+    </div>
+    <div class="small muted" style="margin-top:10px">Dihitung dari seluruh PM (RSDSN + AMPK) yang sudah melewati tahap bersangkutan.</div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">3. Fitur khusus dua jenis PM</p>
+    <p class="card-sub">Perbedaan substansi tahap identifikasi, asesmen, rekomendasi, dan penempatan antara RSDSN dan AMPK.</p>
+    <div class="table-wrap" style="border:none">
+      <table class="compare">
+        <thead><tr><th style="width:22%">Fitur</th><th class="col-rsdsn">RSDSN</th><th class="col-ampk">AMPK</th></tr></thead>
+        <tbody>
+          <tr><td>Identifikasi</td><td class="col-rsdsn">Kondisi disabilitas netra</td><td class="col-ampk">Kasus dan risiko anak</td></tr>
+          <tr><td>Asesmen</td><td class="col-rsdsn">Fisik, sosial, psikologis, fungsional</td><td class="col-ampk">Psikologis, sosial, keluarga, perlindungan</td></tr>
+          <tr><td>Rekomendasi</td><td class="col-rsdsn">Program rehabilitasi</td><td class="col-ampk">Intervensi perlindungan</td></tr>
+          <tr><td>Penempatan</td><td class="col-rsdsn">Program rehabilitasi netra</td><td class="col-ampk">Program perlindungan dan rehabilitasi anak</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Penerimaan terbaru</p>
+    <p class="card-sub">Calon PM yang baru terdaftar atau mengalami perubahan status.</p>
+    ${recentTable(list.slice().sort((a,b)=>(b.tanggalPendaftaran||'').localeCompare(a.tanggalPendaftaran||'')).slice(0,6))}
+  </div>
+  `;
+}
+
+function recentTable(list){
+  if(!list.length) return emptyState('Belum ada data Penerima Manfaat.','Klik menu <b>Pendaftaran calon PM</b> untuk menambah calon PM baru.');
+  return `
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>Usia</th><th>Tgl. Daftar</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+      ${list.map(p=>`
+        <tr>
+          <td>${esc(p.nomorPendaftaran)}</td>
+          <td><b>${esc(p.identitas.namaLengkap)}</b></td>
+          <td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td>
+          <td>${age(p.identitas.tanggalLahir)}</td>
+          <td>${fmtDate(p.tanggalPendaftaran)}</td>
+          <td><span class="tag ${STATUS_TAG[p.status]}">${STATUS_LABEL[p.status]}</span></td>
+          <td style="white-space:nowrap">
+            <button class="btn ghost sm" onclick="setView('identitas','${p.id}')">Detail</button>
+            <button class="btn sm" onclick="editPM('${p.id}')">Edit</button>
+            <button class="btn danger sm" onclick="deletePM('${p.id}')">Hapus</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function emptyState(msg, hint){
+  return `<div class="empty">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    <div style="font-weight:600;color:var(--ink-soft);margin-bottom:4px">${msg}</div>
+    <div class="small">${hint||''}</div>
+  </div>`;
+}
+
+function stepperHTML(pm){
+  const labels = FLOW8;
+  const cur = statusRank(pm.status);
+  const cls = pm.jenis==='AMPK'?'ampk':'';
+  return `<div class="stepper">${labels.map((l,i)=>{
+    const r = i; // step i corresponds to rank i (0..7)
+    let cls2 = '';
+    if(pm.status==='ditolak') cls2='';
+    else if(cur>r) cls2='done '+cls;
+    else if(cur===r) cls2='current';
+    return `<span class="sp ${cls2}"><span class="n">${i+1}</span>${l}</span>`;
+  }).join('')}</div>`;
+}
+
+/* ----- 2. PENDAFTARAN ----- */
+function viewPendaftaran(){
+  const isEdit = !!window.editModeId;
+  const pm = isEdit ? getPM(window.editModeId) : null;
+  const i = pm ? pm.identitas : {};
+  const jenis = isEdit ? pm.jenis : (MODE==='ALL'?'RSDSN':MODE);
+  const title = isEdit ? 'Edit Data Calon PM' : 'Pendaftaran calon PM';
+  const sub = isEdit ? 'Perbarui data identitas calon PM. Nomor pendaftaran dan ID tidak diubah.' : 'Isi formulir pendaftaran awal calon Penerima Manfaat. Setelah disimpan, calon PM berstatus <b>Terdaftar</b> dan siap diverifikasi.';
+  return `
+  <div class="page-head"><h2>${title}</h2><p>${sub}</p></div>
+  <div class="card">
+    <p class="card-title">${isEdit?'Formulir Edit Data':'Formulir Pendaftaran'}</p>
+    <p class="card-sub">${isEdit?'Edit identitas. Tahap lain (verifikasi, asesmen, dll) tetap tersimpan.':'Bagian identitas inti. Data tambahan diisi pada tahap identitas.'}</p>
+    <form onsubmit="submitPendaftaran(event)">
+      <div class="form-grid">
+        <div class="field">
+          <label>Jenis Layanan <span class="req">*</span></label>
+          <select name="jenis" required ${MODE!=='ALL'&&!isEdit?'disabled':''}>
+            <option value="RSDSN" ${jenis==='RSDSN'?'selected':''}>RSDSN &mdash; Disabilitas Netra</option>
+            <option value="AMPK" ${jenis==='AMPK'?'selected':''}>AMPK &mdash; Anak Perlindungan Khusus</option>
+          </select>
+          ${MODE!=='ALL'&&!isEdit?'<span class="hint">Mode layanan aktif: '+MODE+'. Ubah di halaman landing.</span>':''}
+        </div>
+        <div class="field">
+          <label>Tanggal Pendaftaran <span class="req">*</span></label>
+          <input type="date" name="tanggalPendaftaran" required value="${isEdit?(pm.tanggalPendaftaran||''):new Date().toISOString().slice(0,10)}">
+        </div>
+        <div class="field full">
+          <label>Nama Lengkap Calon PM <span class="req">*</span></label>
+          <input type="text" name="namaLengkap" required value="${esc(i.namaLengkap||'')}" placeholder="Nama sesuai dokumen">
+        </div>
+        <div class="field">
+          <label>NIK <span class="req">*</span></label>
+          <input type="text" name="nik" required pattern="[0-9]{16}" maxlength="16" inputmode="numeric" value="${esc(i.nik||'')}" placeholder="16 digit NIK">
+        </div>
+        <div class="field">
+          <label>Tempat Lahir <span class="req">*</span></label>
+          <input type="text" name="tempatLahir" required value="${esc(i.tempatLahir||'')}">
+        </div>
+        <div class="field">
+          <label>Tanggal Lahir <span class="req">*</span></label>
+          <input type="date" name="tanggalLahir" required value="${i.tanggalLahir||''}">
+        </div>
+        <div class="field">
+          <label>Jenis Kelamin <span class="req">*</span></label>
+          <select name="jenisKelamin" required>
+            <option value="">- pilih -</option>
+            <option ${i.jenisKelamin==='Laki-laki'?'selected':''}>Laki-laki</option>
+            <option ${i.jenisKelamin==='Perempuan'?'selected':''}>Perempuan</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Agama</label>
+          <select name="agama"><option value="">- pilih -</option>
+            ${['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu'].map(a=>`<option ${i.agama===a?'selected':''}>${a}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field">
+          <label>Pendidikan</label>
+          <input type="text" name="pendidikan" value="${esc(i.pendidikan||'')}" placeholder="mis. SD / SLTP / SLTA">
+        </div>
+        <div class="field">
+          <label>Pekerjaan</label>
+          <input type="text" name="pekerjaan" value="${esc(i.pekerjaan||'')}" placeholder="mis. Pelajar / Tidak Bekerja">
+        </div>
+        <div class="field full">
+          <label>Alamat <span class="req">*</span></label>
+          <textarea name="alamat" required placeholder="Jalan, RT/RW, Kelurahan, Kecamatan, Kab/Kota">${esc(i.alamat||'')}</textarea>
+        </div>
+        <div class="field">
+          <label>No. Telepon / HP</label>
+          <input type="text" name="telepon" value="${esc(i.telepon||'')}" placeholder="08xxxxxxxxxx">
+        </div>
+        <div class="field">
+          <label>Nama Orang Tua / Wali</label>
+          <input type="text" name="namaWali" value="${esc(i.namaWali||'')}">
+        </div>
+        <div class="field">
+          <label>Hubungan dengan PM</label>
+          <select name="hubunganWali"><option value="">- pilih -</option>
+            ${['Ayah','Ibu','Ibu Kandung','Ayah Kandung','Kakek','Nenek','Saudara','Wali Lainnya'].map(h=>`<option ${i.hubunganWali===h?'selected':''}>${h}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field">
+          <label>Alamat Orang Tua / Wali</label>
+          <input type="text" name="alamatWali" value="${esc(i.alamatWali||'')}">
+        </div>
+        <div class="field full">
+          <label>Catatan Awal (opsional)</label>
+          <textarea name="catatanAwal" placeholder="Catatan singkat dari petugas pendaftaran, mis. rujukan dari instansi tertentu.">${esc(pm&&pm.catatanAwal||'')}</textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn ghost" onclick="window.editModeId=null; setView('identitas')">Batal</button>
+        <button type="submit" class="btn primary">${isEdit?'Simpan Perubahan':'Simpan Pendaftaran'}</button>
+      </div>
+    </form>
+  </div>`;
+}
+
+function submitPendaftaran(e){
+  e.preventDefault();
+  const f = e.target;
+  const fd = new FormData(f);
+  const jenis = fd.get('jenis') || MODE;
+  const id = genId();
+  const nomor = genReg(jenis);
+  const pm = {
+    id, jenis, nomorPendaftaran:nomor, status:'terdaftar',
+    tanggalPendaftaran: fd.get('tanggalPendaftaran'),
+    identitas:{
+      namaLengkap:fd.get('namaLengkap'), nik:fd.get('nik'),
+      tempatLahir:fd.get('tempatLahir'), tanggalLahir:fd.get('tanggalLahir'),
+      jenisKelamin:fd.get('jenisKelamin'), agama:fd.get('agama'),
+      pendidikan:fd.get('pendidikan'), pekerjaan:fd.get('pekerjaan'),
+      alamat:fd.get('alamat'), telepon:fd.get('telepon'),
+      namaWali:fd.get('namaWali'), hubunganWali:fd.get('hubunganWali'), alamatWali:fd.get('alamatWali'),
+      catatanAwal:fd.get('catatanAwal')
+    },
+    verifikasi:{status:'belum_lengkap', berkas:defaultBerkas(jenis), catatan:''},
+    identifikasi:{}, asesmen:{}, seleksi:{}, penetapan:{}, registrasi:{}, kontrak:{}, orientasi:{}
+  };
+  data.pm.unshift(pm);
+  saveData();
+  toast('Pendaftaran tersimpan: '+nomor);
+  setView('identitas', id);
+}
+
+function defaultBerkas(jenis){
+  if(jenis==='RSDSN') return [{n:'KTP',ada:false},{n:'Kartu Keluarga',ada:false},{n:'Surat Keterangan Disabilitas Netra',ada:false},{n:'Pas Foto 3x4',ada:false},{n:'Surat Rujukan (opsional)',ada:false}];
+  return [{n:'Akta Kelahiran',ada:false},{n:'Kartu Keluarga',ada:false},{n:'Surat Keterangan Kasus / Rujukan',ada:false},{n:'Pas Foto 3x4',ada:false},{n:'KTP Wali',ada:false}];
+}
+
+/* ----- 3. DATA IDENTITAS ----- */
+function viewIdentitas(){
+  if(currentPMId && getPM(currentPMId)) return viewPMDetail(currentPMId);
+  const list = listPM();
+  const q = filterState.q.toLowerCase();
+  const filtered = list.filter(p=>{
+    if(filterState.status!=='all' && p.status!==filterState.status) return false;
+    if(!q) return true;
+    return (p.identitas.namaLengkap+' '+p.nomorPendaftaran+' '+p.identitas.nik+' '+(p.identitas.alamat||'')).toLowerCase().includes(q);
+  });
+  const statusOpts = Object.keys(STATUS_LABEL);
+  return `
+  <div class="page-head"><h2>Data identitas calon PM</h2><p>Daftar lengkap calon Penerima Manfaat. Klik baris untuk melihat detail identitas dan melanjutkan proses penerimaan.</p></div>
+  <div class="card">
+    <div class="toolbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Cari nama, NIK, no. pendaftaran, alamat..." value="${esc(filterState.q)}" oninput="filterState.q=this.value; render()">
+      </div>
+      <select onchange="filterState.status=this.value; render()">
+        <option value="all" ${filterState.status==='all'?'selected':''}>Semua status</option>
+        ${statusOpts.map(s=>`<option value="${s}" ${filterState.status===s?'selected':''}>${STATUS_LABEL[s]}</option>`).join('')}
+      </select>
+      <button class="btn primary sm" onclick="setView('pendaftaran')">+ Daftar Baru</button>
+    </div>
+    ${filtered.length?`
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>No. Daftar</th><th>Nama</th><th>NIK</th><th>Jenis</th><th>Usia</th><th>Alamat</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        ${filtered.map(p=>`
+          <tr>
+            <td>${esc(p.nomorPendaftaran)}</td>
+            <td><b>${esc(p.identitas.namaLengkap)}</b><div class="small muted">${esc(p.identitas.tempatLahir)}, ${fmtDate(p.identitas.tanggalLahir)}</div></td>
+            <td>${esc(p.identitas.nik)}</td>
+            <td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td>
+            <td>${age(p.identitas.tanggalLahir)}</td>
+            <td class="small">${esc((p.identitas.alamat||'').slice(0,40))}${(p.identitas.alamat||'').length>40?'...':''}</td>
+            <td><span class="tag ${STATUS_TAG[p.status]}">${STATUS_LABEL[p.status]}</span></td>
+            <td style="white-space:nowrap">
+              <button class="btn ghost sm" onclick="setView('identitas','${p.id}')">Detail</button>
+              <button class="btn sm" onclick="editPM('${p.id}')">Edit</button>
+              <button class="btn danger sm" onclick="deletePM('${p.id}')">Hapus</button>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`:emptyState('Tidak ada data yang cocok.','Coba ubah kata kunci atau filter status.')}
+  </div>`;
+}
+
+function viewPMDetail(id){
+  const p = getPM(id); if(!p) return '<p>Data tidak ditemukan.</p>';
+  const i = p.identitas;
+  const cur = statusRank(p.status);
+  const nextView = nextStepView(cur, p.status);
+  return `
+  <div class="page-head">
+    <div class="row" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <h2 style="margin:0">${esc(i.namaLengkap)}</h2>
+      <div class="row">
+        <button class="btn sm" onclick="editPM('${p.id}')">Edit</button>
+        <button class="btn danger sm" onclick="deletePM('${p.id}')">Hapus</button>
+        <button class="btn ghost sm" onclick="currentPMId=null; setView('identitas')">&larr; Kembali ke daftar</button>
+      </div>
+    </div>
+    <p>${esc(p.nomorPendaftaran)} &middot; <span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span> &middot; <span class="tag ${STATUS_TAG[p.status]}">${STATUS_LABEL[p.status]}</span></p>
+  </div>
+
+  <div class="card">
+    ${stepperHTML(p)}
+    ${p.status==='ditolak'?'<div class="tag bad" style="margin-top:4px">PM ditolak pada tahap seleksi &mdash; arsip terbatas.</div>':''}
+    ${nextView?`<div class="row" style="margin-top:10px"><button class="btn primary sm" onclick="setView('${nextView}','${p.id}')">Lanjutkan ke: ${MENU.find(m=>m.id===nextView).label} &rarr;</button></div>`:''}
+  </div>
+
+  <div class="card">
+    <p class="card-title">Identitas Lengkap</p>
+    <div class="kv">
+      <div><div class="k">NIK</div><div class="v">${esc(i.nik)}</div></div>
+      <div><div class="k">Jenis Kelamin</div><div class="v">${esc(i.jenisKelamin)}</div></div>
+      <div><div class="k">Tempat, Tgl Lahir</div><div class="v">${esc(i.tempatLahir)}, ${fmtDate(i.tanggalLahir)} (${age(i.tanggalLahir)})</div></div>
+      <div><div class="k">Agama</div><div class="v">${esc(i.agama||'-')}</div></div>
+      <div><div class="k">Pendidikan</div><div class="v">${esc(i.pendidikan||'-')}</div></div>
+      <div><div class="k">Pekerjaan</div><div class="v">${esc(i.pekerjaan||'-')}</div></div>
+      <div class="full" style="grid-column:1/-1"><div class="k">Alamat</div><div class="v">${esc(i.alamat||'-')}</div></div>
+      <div><div class="k">Telepon</div><div class="v">${esc(i.telepon||'-')}</div></div>
+      <div><div class="k">Tanggal Pendaftaran</div><div class="v">${fmtDate(p.tanggalPendaftaran)}</div></div>
+      <div><div class="k">Nama Wali</div><div class="v">${esc(i.namaWali||'-')}</div></div>
+      <div><div class="k">Hubungan Wali</div><div class="v">${esc(i.hubunganWali||'-')}</div></div>
+      <div class="full" style="grid-column:1/-1"><div class="k">Alamat Wali</div><div class="v">${esc(i.alamatWali||'-')}</div></div>
+      ${i.catatanAwal?`<div class="full" style="grid-column:1/-1"><div class="k">Catatan Pendaftaran</div><div class="v">${esc(i.catatanAwal)}</div></div>`:''}
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Riwayat Proses Penerimaan</p>
+    ${summaryVerifikasi(p)}
+    ${summaryIdentifikasi(p)}
+    ${summaryAsesmen(p)}
+    ${summarySeleksi(p)}
+    ${summaryPenetapan(p)}
+    ${summaryRegistrasi(p)}
+    ${summaryKontrak(p)}
+    ${summaryOrientasi(p)}
+  </div>`;
+}
+
+function nextStepView(cur, status){
+  if(status==='ditolak') return null;
+  const map = ['verifikasi','identifikasi','asesmen','seleksi','penetapan','registrasi','kontrak','orientasi','laporan'];
+  if(cur<0) return 'verifikasi';
+  if(cur>=map.length-1) return 'laporan';
+  return map[cur];
+}
+
+function stepSummary(title, done, body, editView, pmId){
+  return `<div style="border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px">
+    <div class="row" style="justify-content:space-between">
+      <div style="font-weight:700">${title} ${done?'<span class="tag ok">selesai</span>':'<span class="tag gray">belum</span>'}</div>
+      ${editView?`<button class="btn ghost sm" onclick="setView('${editView}','${pmId}')">${done?'Lihat/Ubah':'Mulai'} &rarr;</button>`:''}
+    </div>
+    <div class="small" style="margin-top:6px;color:var(--ink-soft)">${body}</div>
+  </div>`;
+}
+function summaryVerifikasi(p){
+  const v=p.verifikasi||{};
+  const done = v.status==='lengkap';
+  const body = v.status?`Status berkas: <b>${v.status==='lengkap'?'Lengkap':v.status==='belum_lengkap'?'Belum lengkap':'-'}</b>. ${(v.berkas||[]).filter(b=>b.ada).length}/${(v.berkas||[]).length} berkas tersedia. ${v.catatan?esc(v.catatan):''}`:'Belum dilakukan verifikasi.';
+  return stepSummary('4. Verifikasi Administrasi', done, body, 'verifikasi', p.id);
+}
+function summaryIdentifikasi(p){
+  const id=p.identifikasi||{};
+  let done=false, body='Belum dilakukan identifikasi.';
+  if(p.jenis==='RSDSN'){ done=!!id.jenisKetunanetra; body=done?`Jenis ketunanetra: <b>${esc(id.jenisKetunanetra)}</b>, penyebab: ${esc(id.penyebab)}, durasi: ${esc(id.durasi)}. ${id.riwayatMedis?esc(id.riwayatMedis):''}`:body; }
+  else { done=!!id.jenisKasus; body=done?`Jenis kasus: <b>${esc(id.jenisKasus)}</b>, risiko: ${esc(id.tingkatRisiko)}, rujukan: ${esc(id.sumberRujukan)}. ${id.riwayatKasus?esc(id.riwayatKasus):''}`:body; }
+  return stepSummary('5. Identifikasi', done, body, 'identifikasi', p.id);
+}
+function summaryAsesmen(p){
+  const a=p.asesmen||{};
+  let done, body;
+  if(p.jenis==='RSDSN'){ done=!!(a.fisik||a.sosial||a.psikologis||a.fungsional); body=done?`Fisik: ${a.fisik?'ada':'-'}, Sosial: ${a.sosial?'ada':'-'}, Psikologis: ${a.psikologis?'ada':'-'}, Fungsional: ${a.fungsional?'ada':'-'}.`:'Belum dilakukan asesmen.'; }
+  else { done=!!(a.psikologis||a.sosial||a.keluarga||a.perlindungan); body=done?`Psikologis: ${a.psikologis?'ada':'-'}, Sosial: ${a.sosial?'ada':'-'}, Keluarga: ${a.keluarga?'ada':'-'}, Perlindungan: ${a.perlindungan?'ada':'-'}.`:'Belum dilakukan asesmen.'; }
+  return stepSummary('6. Asesmen', done, body, 'asesmen', p.id);
+}
+function summarySeleksi(p){
+  const s=p.seleksi||{};
+  const done=!!s.hasil;
+  const body = done?`Hasil: <b>${s.hasil==='direkomendasikan'?'Direkomendasikan':'Tidak direkomendasikan'}</b>. Rekomendasi: ${esc(s.rekomendasi)||'-'}. ${s.catatan?esc(s.catatan):''}`:'Belum dilakukan seleksi.';
+  return stepSummary('7. Seleksi &amp; Rekomendasi', done, body, 'seleksi', p.id);
+}
+function summaryPenetapan(p){
+  const t=p.penetapan||{};
+  const done=!!t.keputusan;
+  const body=done?`Keputusan: <b>${t.keputusan==='diterima'?'Diterima':'Ditolak'}</b> (${fmtDate(t.tanggalKeputusan)}). No. SK: ${esc(t.nomorSK)||'-'}. ${t.catatan?esc(t.catatan):''}`:'Belum ada penetapan.';
+  return stepSummary('8. Penetapan Penerimaan', done, body, 'penetapan', p.id);
+}
+function summaryRegistrasi(p){
+  const r=p.registrasi||{};
+  const done=!!r.nomorRegistrasi;
+  const body=done?`No. Registrasi: <b>${esc(r.nomorRegistrasi)}</b> (${fmtDate(r.tanggalRegistrasi)}). Petugas: ${esc(r.petugas)||'-'}.`:'Belum dilakukan registrasi PM.';
+  return stepSummary('9. Registrasi PM', done, body, 'registrasi', p.id);
+}
+function summaryKontrak(p){
+  const k=p.kontrak||{};
+  const done=!!k.nomorKontrak;
+  const body=done?`No. Kontrak: <b>${esc(k.nomorKontrak)}</b>. Layanan: ${esc(k.jenisLayanan)||'-'} (${fmtDate(k.tanggalMulai)} s/d ${fmtDate(k.tanggalSelesai)}). PJ: ${esc(k.penanggungJawab)||'-'}.`:'Belum disusun kontrak pelayanan.';
+  return stepSummary('10. Kontrak Pelayanan', done, body, 'kontrak', p.id);
+}
+function summaryOrientasi(p){
+  const o=p.orientasi||{};
+  const done=!!o.tanggalMulai;
+  const body=done?`Orientasi ${fmtDate(o.tanggalMulai)} s/d ${fmtDate(o.tanggalSelesai)}. Penempatan: <b>${esc(o.lokasiPenempatan)||'-'}</b>. Program: ${esc(o.program)||'-'}.`:'Belum dilakukan orientasi/penempatan.';
+  return stepSummary('11. Orientasi &amp; Penempatan', done, body, 'orientasi', p.id);
+}
+
+/* ----- 4. VERIFIKASI ADMINISTRASI ----- */
+function viewVerifikasi(){
+  if(currentPMId && getPM(currentPMId)) return viewVerifikasiForm(currentPMId);
+  const list = listPM().filter(p=>p.status==='terdaftar' || (p.verifikasi&&p.verifikasi.status==='belum_lengkap'));
+  return `
+  <div class="page-head"><h2>Penerimaan dan verifikasi administrasi</h2><p>Verifikasi kelengkapan berkas calon PM. Jika berkas lengkap, status naik menjadi <b>Terverifikasi</b>.</p></div>
+  <div class="card">
+    <p class="card-title">Antrian Verifikasi</p>
+    ${list.length?`<div class="table-wrap"><table>
+      <thead><tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>Tgl. Daftar</th><th>Berkas</th><th></th></tr></thead>
+      <tbody>${list.map(p=>{const v=p.verifikasi||{};const ada=(v.berkas||[]).filter(b=>b.ada).length,tot=(v.berkas||[]).length;return `<tr><td>${esc(p.nomorPendaftaran)}</td><td><b>${esc(p.identitas.namaLengkap)}</b></td><td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td><td>${fmtDate(p.tanggalPendaftaran)}</td><td><span class="tag ${ada===tot?'ok':'warn'}">${ada}/${tot}</span></td><td><button class="btn primary sm" onclick="setView('verifikasi','${p.id}')">Verifikasi</button></td></tr>`}).join('')}</tbody>
+    </table></div>`:emptyState('Tidak ada antrian verifikasi.','Semua calon PM sudah diverifikasi atau belum ada yang terdaftar.')}
+  </div>`;
+}
+
+function viewVerifikasiForm(id){
+  const p=getPM(id); const v=p.verifikasi;
+  return `
+  <div class="page-head"><div class="row" style="justify-content:space-between"><h2>Verifikasi Administrasi &mdash; ${esc(p.identitas.namaLengkap)}</h2><button class="btn ghost sm" onclick="currentPMId=null; setView('verifikasi')">&larr; Kembali</button></div><p>${esc(p.nomorPendaftaran)} &middot; <span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></p></div>
+  <div class="card">
+    <p class="card-title">Daftar Berkas</p>
+    <p class="card-sub">Centang berkas yang tersedia dan lengkap.</p>
+    <form onsubmit="submitVerifikasi(event,'${p.id}')">
+      ${(v.berkas||[]).map((b,idx)=>`
+        <div class="field inline" style="margin-bottom:6px">
+          <input type="checkbox" id="berkas-${idx}" name="berkas_${idx}" ${b.ada?'checked':''}>
+          <label for="berkas-${idx}">${esc(b.n)}</label>
+        </div>
+      `).join('')}
+      <div class="field full" style="margin-top:12px">
+        <label>Catatan Verifikasi</label>
+        <textarea name="catatan" placeholder="Catatan jika ada berkas yang perlu dilengkapi atau catatan petugas.">${esc(v.catatan||'')}</textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn ghost" onclick="setView('identitas','${p.id}')">Batal</button>
+        <button type="submit" name="act" value="lengkap" class="btn success">Tandai Lengkap &amp; Lanjut</button>
+        <button type="submit" name="act" value="belum" class="btn">Simpan (Belum Lengkap)</button>
+      </div>
+    </form>
+  </div>`;
+}
+
+function submitVerifikasi(e,id){
+  e.preventDefault();
+  const p=getPM(id); const f=e.target;
+  const fd=new FormData(f);
+  const act=fd.get('act');
+  p.verifikasi.berkas = p.verifikasi.berkas.map((b,i)=>({n:b.n, ada:!!fd.get('berkas_'+i)}));
+  p.verifikasi.catatan = fd.get('catatan')||'';
+  const lengkap = p.verifikasi.berkas.every(b=>b.ada);
+  if(act==='lengkap' || lengkap){
+    p.verifikasi.status='lengkap';
+    if(p.status==='terdaftar') p.status='terverifikasi';
+    toast('Berkas lengkap. Status: Terverifikasi.');
+  }else{
+    p.verifikasi.status='belum_lengkap';
+    toast('Disimpan. Beberapa berkas masih belum lengkap.');
+  }
+  saveData();
+  setView('identitas', id);
+}
+
+/* ----- 5. IDENTIFIKASI ----- */
+function viewIdentifikasi(){
+  if(currentPMId && getPM(currentPMId)) return viewIdentifikasiForm(currentPMId);
+  const list = listPM().filter(p=>statusRank(p.status)>=1 && statusRank(p.status)<=2);
+  return `
+  <div class="page-head"><h2>Identifikasi calon PM</h2><p>Tahap ini berbeda untuk RSDSN (kondisi disabilitas netra) dan AMPK (kasus dan risiko anak).</p></div>
+  <div class="card"><p class="card-title">Antrian Identifikasi</p>
+  ${list.length?`<div class="table-wrap"><table><thead><tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>Identifikasi</th><th></th></tr></thead><tbody>${list.map(p=>{const d=p.identifikasi||{};const txt=p.jenis==='RSDSN'?(d.jenisKetunanetra||'-'):(d.jenisKasus||'-');return `<tr><td>${esc(p.nomorPendaftaran)}</td><td><b>${esc(p.identitas.namaLengkap)}</b></td><td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td><td>${esc(txt)}</td><td><button class="btn primary sm" onclick="setView('identifikasi','${p.id}')">${txt?'Lihat/Ubah':'Mulai'}</button></td></tr>`}).join('')}</tbody></table></div>`:emptyState('Tidak ada antrian identifikasi.','Pastikan calon PM sudah diverifikasi administrasi.')}
+  </div>`;
+}
+
+function viewIdentifikasiForm(id){
+  const p=getPM(id); const d=p.identifikasi||{};
+  const rsdsnFields = `
+    <div class="field"><label>Jenis Ketunanetra <span class="req">*</span></label><select name="jenisKetunanetra" required><option value="">- pilih -</option><option ${d.jenisKetunanetra==='Buta total'?'selected':''}>Buta total</option><option ${d.jenisKetunanetra==='Buta sebagian'?'selected':''}>Buta sebagian</option><option ${d.jenisKetunanetra==='Low vision'?'selected':''}>Low vision</option><option ${d.jenisKetunanetra==='Buta satu mata'?'selected':''}>Buta satu mata</option></select></div>
+    <div class="field"><label>Penyebab <span class="req">*</span></label><select name="penyebab" required><option value="">- pilih -</option><option ${d.penyebab==='Kongenital'?'selected':''}>Kongenital (sejak lahir)</option><option ${d.penyebab==='Trauma'?'selected':''}>Trauma/kecelakaan</option><option ${d.penyebab==='Penyakit'?'selected':''}>Penyakit (glaukoma, katarak, dll)</option><option ${d.penyebab==='Usia'?'selected':''}>Usia (degeneratif)</option><option>Lainnya</option></select></div>
+    <div class="field"><label>Durasi Kondisi</label><input type="text" name="durasi" value="${esc(d.durasi||'')}" placeholder="mis. 5 tahun"></div>
+    <div class="field full"><label>Riwayat Medis &amp; Rehabilitasi Sebelumnya</label><textarea name="riwayatMedis">${esc(d.riwayatMedis||'')}</textarea></div>`;
+  const ampkFields = `
+    <div class="field"><label>Jenis Kasus <span class="req">*</span></label><select name="jenisKasus" required><option value="">- pilih -</option><option ${d.jenisKasus==='Anak terlantar'?'selected':''}>Anak terlantar</option><option ${d.jenisKasus==='Kekerasan dalam rumah tangga'?'selected':''}>Kekerasan dalam rumah tangga</option><option ${d.jenisKasus==='Kekerasan seksual'?'selected':''}>Kekerasan seksual</option><option ${d.jenisKasus==='Eksploitasi'?'selected':''}>Eksploitasi (tenaga kerja/ekonomi)</option><option ${d.jenisKasus==='Trafficking'?'selected':''}>Trafficking</option><option ${d.jenisKasus==='Anak berhadapan hukum'?'selected':''}>Anak berhadapan dengan hukum</option><option>Lainnya</option></select></div>
+    <div class="field"><label>Tingkat Risiko <span class="req">*</span></label><select name="tingkatRisiko" required><option value="">- pilih -</option><option ${d.tingkatRisiko==='Tinggi'?'selected':''}>Tinggi</option><option ${d.tingkatRisiko==='Sedang'?'selected':''}>Sedang</option><option ${d.tingkatRisiko==='Rendah'?'selected':''}>Rendah</option></select></div>
+    <div class="field"><label>Sumber Rujukan</label><input type="text" name="sumberRujukan" value="${esc(d.sumberRujukan||'')}" placeholder="mis. P2TP2A / Kelurahan / Polres"></div>
+    <div class="field full"><label>Riwayat Kasus &amp; Tindakan Awal</label><textarea name="riwayatKasus">${esc(d.riwayatKasus||'')}</textarea></div>`;
+  return `
+  <div class="page-head"><div class="row" style="justify-content:space-between"><h2>Identifikasi &mdash; ${esc(p.identitas.namaLengkap)}</h2><button class="btn ghost sm" onclick="currentPMId=null; setView('identifikasi')">&larr; Kembali</button></div><p>${esc(p.nomorPendaftaran)} &middot; <span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></p></div>
+  <div class="card">
+    <p class="card-title">Formulir Identifikasi (${p.jenis})</p>
+    <p class="card-sub">${p.jenis==='RSDSN'?'Mengidentifikasi kondisi disabilitas netra calon PM.':'Mengidentifikasi kasus dan tingkat risiko anak.'}</p>
+    <form onsubmit="submitIdentifikasi(event,'${p.id}')">
+      <div class="form-grid">${p.jenis==='RSDSN'?rsdsnFields:ampkFields}</div>
+      <div class="form-actions">
+        <button type="button" class="btn ghost" onclick="setView('identitas','${p.id}')">Batal</button>
+        <button type="submit" class="btn primary">Simpan &amp; Lanjut ke Asesmen</button>
+      </div>
+    </form>
+  </div>`;
+}
+
+function submitIdentifikasi(e,id){
+  e.preventDefault();
+  const p=getPM(id); const fd=new FormData(e.target);
+  if(p.jenis==='RSDSN'){
+    p.identifikasi={jenisKetunanetra:fd.get('jenisKetunanetra'),penyebab:fd.get('penyebab'),durasi:fd.get('durasi'),riwayatMedis:fd.get('riwayatMedis')};
+  }else{
+    p.identifikasi={jenisKasus:fd.get('jenisKasus'),tingkatRisiko:fd.get('tingkatRisiko'),sumberRujukan:fd.get('sumberRujukan'),riwayatKasus:fd.get('riwayatKasus')};
+  }
+  if(['terverifikasi','teridentifikasi'].includes(p.status)) p.status='teridentifikasi';
+  saveData(); toast('Identifikasi tersimpan.');
+  setView('asesmen', id);
+}
+
+/* ----- 6. ASESMEN ----- */
+function viewAsesmen(){
+  if(currentPMId && getPM(currentPMId)) return viewAsesmenForm(currentPMId);
+  const list = listPM().filter(p=>statusRank(p.status)>=2 && statusRank(p.status)<=3);
+  return `<div class="page-head"><h2>Asesmen calon PM</h2><p>Asesmen multidimensi. RSDSN: fisik, sosial, psikologis, fungsional. AMPK: psikologis, sosial, keluarga, perlindungan.</p></div>
+  <div class="card"><p class="card-title">Antrian Asesmen</p>
+  ${list.length?`<div class="table-wrap"><table><thead><tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>Aspek Dinilai</th><th></th></tr></thead><tbody>${list.map(p=>{const a=p.asesmen||{};const cnt=p.jenis==='RSDSN'?[a.fisik,a.sosial,a.psikologis,a.fungsional].filter(Boolean).length:[a.psikologis,a.sosial,a.keluarga,a.perlindungan].filter(Boolean).length;return `<tr><td>${esc(p.nomorPendaftaran)}</td><td><b>${esc(p.identitas.namaLengkap)}</b></td><td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td><td><span class="tag ${cnt===4?'ok':cnt>0?'warn':'gray'}">${cnt}/4 selesai</span></td><td><button class="btn primary sm" onclick="setView('asesmen','${p.id}')">${cnt?'Lihat/Ubah':'Mulai'}</button></td></tr>`}).join('')}</tbody></table></div>`:emptyState('Tidak ada antrian asesmen.','Pastikan calon PM sudah melalui tahap identifikasi.')}
+  </div>`;
+}
+
+function viewAsesmenForm(id){
+  const p=getPM(id); const a=p.asesmen||{};
+  const fields = p.jenis==='RSDSN'?
+    [['fisik','Asesmen Fisik','Kondisi kesehatan umum, komorbid, penglihatan.'],['sosial','Asesmen Sosial','Dukungan keluarga, lingkungan, interaksi sosial.'],['psikologis','Asesmen Psikologis','Kondisi mental, motivasi, kesiapan rehabilitasi.'],['fungsional','Asesmen Fungsional','Kemandirian aktivitas kehidupan sehari-hari, mobilitas.']]:
+    [['psikologis','Asesmen Psikologis','Tingkat trauma, kecemasan, kebutuhan terapi.'],['sosial','Asesmen Sosial','Pendukung sosial, relasi, lingkungan.'],['keluarga','Asesmen Keluarga','Kondisi keluarga, keamanan, kapasitas pengasuhan.'],['perlindungan','Asesmen Perlindungan','Kebutuhan perlindungan, rencana keamanan.']];
+  return `<div class="page-head"><div class="row" style="justify-content:space-between"><h2>Asesmen &mdash; ${esc(p.identitas.namaLengkap)}</h2><button class="btn ghost sm" onclick="currentPMId=null; setView('asesmen')">&larr; Kembali</button></div><p>${esc(p.nomorPendaftaran)} &middot; <span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></p></div>
+  <div class="card"><p class="card-title">Formulir Asesmen Multidimensi</p><p class="card-sub">Isi empat aspek asesmen sesuai jenis PM.</p>
+    <form onsubmit="submitAsesmen(event,'${p.id}')">
+      <div class="form-grid">
+        ${fields.map(([k,t,h])=>`<div class="field full"><label>${t}</label><span class="hint">${h}</span><textarea name="${k}">${esc(a[k]||'')}</textarea></div>`).join('')}
+      </div>
+      <div class="form-actions"><button type="button" class="btn ghost" onclick="setView('identitas','${p.id}')">Batal</button><button type="submit" class="btn primary">Simpan &amp; Lanjut ke Seleksi</button></div>
+    </form>
+  </div>`;
+}
+
+function submitAsesmen(e,id){
+  e.preventDefault();
+  const p=getPM(id); const fd=new FormData(e.target);
+  if(p.jenis==='RSDSN'){p.asesmen={fisik:fd.get('fisik'),sosial:fd.get('sosial'),psikologis:fd.get('psikologis'),fungsional:fd.get('fungsional')};}
+  else{p.asesmen={psikologis:fd.get('psikologis'),sosial:fd.get('sosial'),keluarga:fd.get('keluarga'),perlindungan:fd.get('perlindungan')};}
+  if(['teridentifikasi','terasesmen'].includes(p.status)) p.status='terasesmen';
+  saveData(); toast('Asesmen tersimpan.');
+  setView('seleksi', id);
+}
+
+/* ----- 7. SELEKSI & REKOMENDASI ----- */
+function viewSeleksi(){
+  if(currentPMId && getPM(currentPMId)) return viewSeleksiForm(currentPMId);
+  const list = listPM().filter(p=>statusRank(p.status)>=3 && statusRank(p.status)<=4);
+  return `<div class="page-head"><h2>Seleksi dan rekomendasi</h2><p>Hasil seleksi dan rekomendasi program. RSDSN direkomendasikan program rehabilitasi; AMPK direkomendasikan intervensi perlindungan.</p></div>
+  <div class="card"><p class="card-title">Antrian Seleksi</p>
+  ${list.length?`<div class="table-wrap"><table><thead><tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>Rekomendasi</th><th></th></tr></thead><tbody>${list.map(p=>{const s=p.seleksi||{};return `<tr><td>${esc(p.nomorPendaftaran)}</td><td><b>${esc(p.identitas.namaLengkap)}</b></td><td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td><td>${s.hasil?`<span class="tag ${s.hasil==='direkomendasikan'?'ok':'bad'}">${s.hasil==='direkomendasikan'?'Direkomendasikan':'Tidak'}</span> ${esc(s.rekomendasi||'')}`:'-'}</td><td><button class="btn primary sm" onclick="setView('seleksi','${p.id}')">${s.hasil?'Lihat/Ubah':'Mulai'}</button></td></tr>`}).join('')}</tbody></table></div>`:emptyState('Tidak ada antrian seleksi.','Pastikan calon PM sudah diasesmen.')}
+  </div>`;
+}
+
+function viewSeleksiForm(id){
+  const p=getPM(id); const s=p.seleksi||{};
+  const recDefault = p.jenis==='RSDSN'?'Program rehabilitasi':'Intervensi perlindungan';
+  return `<div class="page-head"><div class="row" style="justify-content:space-between"><h2>Seleksi &amp; Rekomendasi &mdash; ${esc(p.identitas.namaLengkap)}</h2><button class="btn ghost sm" onclick="currentPMId=null; setView('seleksi')">&larr; Kembali</button></div><p>${esc(p.nomorPendaftaran)} &middot; <span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></p></div>
+  <div class="card"><p class="card-title">Formulir Seleksi</p><p class="card-sub">Berdasarkan hasil identifikasi dan asesmen.</p>
+    <form onsubmit="submitSeleksi(event,'${p.id}')">
+      <div class="form-grid">
+        <div class="field"><label>Hasil Seleksi <span class="req">*</span></label><select name="hasil" required><option value="">- pilih -</option><option value="direkomendasikan" ${s.hasil==='direkomendasikan'?'selected':''}>Direkomendasikan</option><option value="tidak" ${s.hasil==='tidak'?'selected':''}>Tidak Direkomendasikan</option></select></div>
+        <div class="field"><label>Rekomendasi Program <span class="req">*</span></label><select name="rekomendasi" required><option value="">- pilih -</option><option ${s.rekomendasi===recDefault||!s.rekomendasi?'selected':''}>${recDefault}</option><option>Program rehabilitasi lanjutan</option><option>Rujuk ke panti/lembaga lain</option><option>Pendampingan keluarga</option><option>Tidak ada rekomendasi</option></select></div>
+        <div class="field full"><label>Catatan Seleksi</label><textarea name="catatan">${esc(s.catatan||'')}</textarea></div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn ghost" onclick="setView('identitas','${p.id}')">Batal</button><button type="submit" class="btn primary">Simpan &amp; Lanjut ke Penetapan</button></div>
+    </form>
+  </div>`;
+}
+
+function submitSeleksi(e,id){
+  e.preventDefault();
+  const p=getPM(id); const fd=new FormData(e.target);
+  p.seleksi={hasil:fd.get('hasil'),rekomendasi:fd.get('rekomendasi'),catatan:fd.get('catatan')};
+  if(['terasesmen','terseleksi'].includes(p.status)) p.status='terseleksi';
+  saveData(); toast('Seleksi tersimpan.');
+  setView('penetapan', id);
+}
+
+/* ----- 8. PENETAPAN PENERIMAAN ----- */
+function viewPenetapan(){
+  if(currentPMId && getPM(currentPMId)) return viewPenetapanForm(currentPMId);
+  const list = listPM().filter(p=>statusRank(p.status)>=4 && statusRank(p.status)<=5);
+  return `<div class="page-head"><h2>Penetapan penerimaan</h2><p>Keputusan akhir penerimaan sebagai PM diterima atau ditolak, dituangkan dalam Surat Keputusan (SK).</p></div>
+  <div class="card"><p class="card-title">Antrian Penetapan</p>
+  ${list.length?`<div class="table-wrap"><table><thead><tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>Rekomendasi</th><th></th></tr></thead><tbody>${list.map(p=>{const s=p.seleksi||{};return `<tr><td>${esc(p.nomorPendaftaran)}</td><td><b>${esc(p.identitas.namaLengkap)}</b></td><td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td><td>${esc(s.rekomendasi||'-')}</td><td><button class="btn primary sm" onclick="setView('penetapan','${p.id}')">Tetapkan</button></td></tr>`}).join('')}</tbody></table></div>`:emptyState('Tidak ada antrian penetapan.','Pastikan calon PM sudah diseleksi.')}
+  </div>`;
+}
+
+function viewPenetapanForm(id){
+  const p=getPM(id); const t=p.penetapan||{};
+  const y=new Date().getFullYear();
+  const skSuggest = `070/SK/${p.jenis==='RSDSN'?'RSDSN':'AMPK'}/${romanMonth(new Date().getMonth()+1)}/${y}`;
+  return `<div class="page-head"><div class="row" style="justify-content:space-between"><h2>Penetapan &mdash; ${esc(p.identitas.namaLengkap)}</h2><button class="btn ghost sm" onclick="currentPMId=null; setView('penetapan')">&larr; Kembali</button></div><p>${esc(p.nomorPendaftaran)} &middot; <span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></p></div>
+  <div class="card"><p class="card-title">Surat Keputusan Penerimaan</p><p class="card-sub">Rekomendasi seleksi: <b>${esc((p.seleksi||{}).rekomendasi||'-')}</b> (${esc((p.seleksi||{}).hasil||'-')}).</p>
+    <form onsubmit="submitPenetapan(event,'${p.id}')">
+      <div class="form-grid">
+        <div class="field"><label>Keputusan <span class="req">*</span></label><select name="keputusan" required><option value="">- pilih -</option><option value="diterima" ${t.keputusan==='diterima'?'selected':''}>Diterima sebagai PM</option><option value="ditolak" ${t.keputusan==='ditolak'?'selected':''}>Ditolak</option></select></div>
+        <div class="field"><label>Tanggal Keputusan <span class="req">*</span></label><input type="date" name="tanggalKeputusan" required value="${t.tanggalKeputusan||new Date().toISOString().slice(0,10)}"></div>
+        <div class="field"><label>Nomor SK <span class="req">*</span></label><input type="text" name="nomorSK" required value="${esc(t.nomorSK||skSuggest)}"></div>
+        <div class="field"><label>Ditetapkan Oleh</label><input type="text" name="oleh" value="${esc(t.oleh||'Kepala UPT RSDSN & AMPK Malang')}" placeholder="Pejabat penetap"></div>
+        <div class="field full"><label>Catatan Keputusan</label><textarea name="catatan">${esc(t.catatan||'')}</textarea></div>
+      </div>
+      <div class="form-actions">
+  <button type="button" class="btn ghost" onclick="setView('identitas','${p.id}')">Batal</button>
+  <button type="button" class="btn" onclick="requestApproval('${p.id}','penetapan','Permintaan penetapan penerimaan')">Minta Approval</button>
+  <button type="submit" class="btn success">Tetapkan Keputusan</button>
+</div>
+    </form>
+  </div>`;
+}
+
+function romanMonth(m){const r=['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];return r[m]||'';}
+
+function submitPenetapan(e,id){
+  e.preventDefault();
+  const p=getPM(id); const fd=new FormData(e.target);
+  const dec=fd.get('keputusan');
+  p.penetapan={keputusan:dec,tanggalKeputusan:fd.get('tanggalKeputusan'),nomorSK:fd.get('nomorSK'),oleh:fd.get('oleh'),catatan:fd.get('catatan')};
+  if(dec==='diterima'){ p.status='ditetapkan'; toast('PM diterima. Status: Ditetapkan.'); }
+  else { p.status='ditolak'; toast('PM ditolak. Status: Ditolak.'); saveData(); setView('identitas',id); return; }
+  saveData();
+  setView('registrasi', id);
+}
+
+/* ----- 9. REGISTRASI PM ----- */
+function viewRegistrasi(){
+  if(currentPMId && getPM(currentPMId)) return viewRegistrasiForm(currentPMId);
+  const list = listPM().filter(p=>['ditetapkan','teregistrasi'].includes(p.status));
+  return `<div class="page-head"><h2>Registrasi PM</h2><p>Penerbitan nomor registrasi resmi sebagai Penerima Manfaat setelah diterima (penetapan).</p></div>
+  <div class="card"><p class="card-title">Antrian Registrasi</p>
+  ${list.length?`<div class="table-wrap"><table><thead><tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>No. SK</th><th>No. Registrasi</th><th></th></tr></thead><tbody>${list.map(p=>{const r=p.registrasi||{};return `<tr><td>${esc(p.nomorPendaftaran)}</td><td><b>${esc(p.identitas.namaLengkap)}</b></td><td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td><td>${esc((p.penetapan||{}).nomorSK||'-')}</td><td>${r.nomorRegistrasi?'<b>'+esc(r.nomorRegistrasi)+'</b>':'<span class="tag warn">belum</span>'}</td><td><button class="btn primary sm" onclick="setView('registrasi','${p.id}')">${r.nomorRegistrasi?'Lihat/Ubah':'Registrasi'}</button></td></tr>`}).join('')}</tbody></table></div>`:emptyState('Tidak ada antrian registrasi.','Pastikan PM sudah ditetapkan (diterima).')}
+  </div>`;
+}
+
+function viewRegistrasiForm(id){
+  const p=getPM(id); const r=p.registrasi||{};
+  const y=new Date().getFullYear();
+  const cnt=data.pm.filter(x=>x.jenis===p.jenis && (x.registrasi||{}).nomorRegistrasi).length+1;
+  const sug=`PM-${p.jenis}-${y}-${cnt.toString().padStart(3,'0')}`;
+  return `<div class="page-head"><div class="row" style="justify-content:space-between"><h2>Registrasi &mdash; ${esc(p.identitas.namaLengkap)}</h2><button class="btn ghost sm" onclick="currentPMId=null; setView('registrasi')">&larr; Kembali</button></div><p>${esc(p.nomorPendaftaran)} &middot; <span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></p></div>
+  <div class="card"><p class="card-title">Formulir Registrasi PM</p>
+    <form onsubmit="submitRegistrasi(event,'${p.id}')">
+      <div class="form-grid">
+        <div class="field"><label>Nomor Registrasi <span class="req">*</span></label><input type="text" name="nomorRegistrasi" required value="${esc(r.nomorRegistrasi||sug)}"></div>
+        <div class="field"><label>Tanggal Registrasi <span class="req">*</span></label><input type="date" name="tanggalRegistrasi" required value="${r.tanggalRegistrasi||new Date().toISOString().slice(0,10)}"></div>
+        <div class="field full"><label>Petugas Registrasi</label><input type="text" name="petugas" value="${esc(r.petugas||'')}" placeholder="Nama petugas penerimaan"></div>
+        <div class="field full"><label>Catatan</label><textarea name="catatan">${esc(r.catatan||'')}</textarea></div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn ghost" onclick="setView('identitas','${p.id}')">Batal</button><button type="submit" class="btn primary">Simpan &amp; Lanjut ke Kontrak</button></div>
+    </form>
+  </div>`;
+}
+
+function submitRegistrasi(e,id){
+  e.preventDefault();
+  const p=getPM(id); const fd=new FormData(e.target);
+  p.registrasi={nomorRegistrasi:fd.get('nomorRegistrasi'),tanggalRegistrasi:fd.get('tanggalRegistrasi'),petugas:fd.get('petugas'),catatan:fd.get('catatan')};
+  if(p.status==='ditetapkan') p.status='teregistrasi';
+  saveData(); toast('Registrasi tersimpan.');
+  setView('kontrak', id);
+}
+
+/* ----- 10. KONTRAK PELAYANAN ----- */
+function viewKontrak(){
+  if(currentPMId && getPM(currentPMId)) return viewKontrakForm(currentPMId);
+  const list = listPM().filter(p=>['teregistrasi','terkontrak'].includes(p.status));
+  return `<div class="page-head"><h2>Kontrak pelayanan</h2><p>Penyusunan kontrak pelayanan antara PM dan UPT, mencakup jenis layanan dan jangka waktu.</p></div>
+  <div class="card"><p class="card-title">Antrian Kontrak</p>
+  ${list.length?`<div class="table-wrap"><table><thead><tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>No. Registrasi</th><th>Kontrak</th><th></th></tr></thead><tbody>${list.map(p=>{const k=p.kontrak||{};return `<tr><td>${esc(p.nomorPendaftaran)}</td><td><b>${esc(p.identitas.namaLengkap)}</b></td><td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td><td>${esc((p.registrasi||{}).nomorRegistrasi||'-')}</td><td>${k.nomorKontrak?'<b>'+esc(k.nomorKontrak)+'</b>':'<span class="tag warn">belum</span>'}</td><td><button class="btn primary sm" onclick="setView('kontrak','${p.id}')">${k.nomorKontrak?'Lihat/Ubah':'Susun'}</button></td></tr>`}).join('')}</tbody></table></div>`:emptyState('Tidak ada antrian kontrak.','Pastikan PM sudah teregistrasi.')}
+  </div>`;
+}
+
+function viewKontrakForm(id){
+  const p=getPM(id); const k=p.kontrak||{};
+  const y=new Date().getFullYear();
+  const cnt=data.pm.filter(x=>x.jenis===p.jenis && (x.kontrak||{}).nomorKontrak).length+1;
+  const sug=`KTR/${p.jenis==='RSDSN'?'RSDSN':'AMPK'}/${y}/${cnt.toString().padStart(3,'0')}`;
+  const defLayanan = p.jenis==='RSDSN'?'Rehabilitasi netra (6 bulan)':'Perlindungan dan rehabilitasi anak (6 bulan)';
+  return `<div class="page-head"><div class="row" style="justify-content:space-between"><h2>Kontrak &mdash; ${esc(p.identitas.namaLengkap)}</h2><button class="btn ghost sm" onclick="currentPMId=null; setView('kontrak')">&larr; Kembali</button></div><p>${esc((p.registrasi||{}).nomorRegistrasi||p.nomorPendaftaran)} &middot; <span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></p></div>
+  <div class="card"><p class="card-title">Formulir Kontrak Pelayanan</p>
+    <form onsubmit="submitKontrak(event,'${p.id}')">
+      <div class="form-grid">
+        <div class="field"><label>Nomor Kontrak <span class="req">*</span></label><input type="text" name="nomorKontrak" required value="${esc(k.nomorKontrak||sug)}"></div>
+        <div class="field"><label>Tanggal Mulai <span class="req">*</span></label><input type="date" name="tanggalMulai" required value="${k.tanggalMulai||new Date().toISOString().slice(0,10)}"></div>
+        <div class="field"><label>Tanggal Selesai <span class="req">*</span></label><input type="date" name="tanggalSelesai" required value="${k.tanggalSelesai||''}"></div>
+        <div class="field"><label>Jenis Layanan <span class="req">*</span></label><input type="text" name="jenisLayanan" required value="${esc(k.jenisLayanan||defLayanan)}"></div>
+        <div class="field full"><label>Penanggung Jawab</label><input type="text" name="penanggungJawab" value="${esc(k.penanggungJawab||'')}" placeholder="Nama PJ layanan"></div>
+        <div class="field full"><label>Catatan Kontrak</label><textarea name="catatan">${esc(k.catatan||'')}</textarea></div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn ghost" onclick="setView('identitas','${p.id}')">Batal</button><button type="submit" class="btn primary">Simpan &amp; Lanjut ke Orientasi</button></div>
+    </form>
+  </div>`;
+}
+
+function submitKontrak(e,id){
+  e.preventDefault();
+  const p=getPM(id); const fd=new FormData(e.target);
+  p.kontrak={nomorKontrak:fd.get('nomorKontrak'),tanggalMulai:fd.get('tanggalMulai'),tanggalSelesai:fd.get('tanggalSelesai'),jenisLayanan:fd.get('jenisLayanan'),penanggungJawab:fd.get('penanggungJawab'),catatan:fd.get('catatan')};
+  if(p.status==='teregistrasi') p.status='terkontrak';
+  saveData(); toast('Kontrak tersimpan.');
+  setView('orientasi', id);
+}
+
+/* ----- 11. ORIENTASI & PENEMPATAN ----- */
+function viewOrientasi(){
+  if(currentPMId && getPM(currentPMId)) return viewOrientasiForm(currentPMId);
+  const list = listPM().filter(p=>['terkontrak','terorientasi'].includes(p.status));
+  return `<div class="page-head"><h2>Orientasi dan penempatan</h2><p>Tahap akhir: orientasi PM dan penempatan pada program. RSDSN: program rehabilitasi netra. AMPK: program perlindungan dan rehabilitasi anak.</p></div>
+  <div class="card"><p class="card-title">Antrian Orientasi</p>
+  ${list.length?`<div class="table-wrap"><table><thead><tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>Penempatan</th><th>Status</th><th></th></tr></thead><tbody>${list.map(p=>{const o=p.orientasi||{};return `<tr><td>${esc(p.nomorPendaftaran)}</td><td><b>${esc(p.identitas.namaLengkap)}</b></td><td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td><td>${esc(o.lokasiPenempatan||'-')}</td><td>${o.tanggalMulai?'<span class="tag ok">Ditempatkan</span>':'<span class="tag warn">Menunggu</span>'}</td><td><button class="btn primary sm" onclick="setView('orientasi','${p.id}')">${o.tanggalMulai?'Lihat/Ubah':'Mulai'}</button></td></tr>`}).join('')}</tbody></table></div>`:emptyState('Tidak ada antrian orientasi.','Pastikan PM sudah memiliki kontrak pelayanan.')}
+  </div>`;
+}
+
+function viewOrientasiForm(id){
+  const p=getPM(id); const o=p.orientasi||{};
+  const defProg = p.jenis==='RSDSN'?'Program rehabilitasi netra':'Program perlindungan dan rehabilitasi anak';
+  const defLok = p.jenis==='RSDSN'?'Asrama RSDSN Blok A':'Ruang pelayanan AMPK';
+  return `<div class="page-head"><div class="row" style="justify-content:space-between"><h2>Orientasi &amp; Penempatan &mdash; ${esc(p.identitas.namaLengkap)}</h2><button class="btn ghost sm" onclick="currentPMId=null; setView('orientasi')">&larr; Kembali</button></div><p>${esc((p.registrasi||{}).nomorRegistrasi||p.nomorPendaftaran)} &middot; <span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></p></div>
+  <div class="card"><p class="card-title">Formulir Orientasi &amp; Penempatan</p>
+    <form onsubmit="submitOrientasi(event,'${p.id}')">
+      <div class="form-grid">
+        <div class="field"><label>Tanggal Mulai Orientasi <span class="req">*</span></label><input type="date" name="tanggalMulai" required value="${o.tanggalMulai||new Date().toISOString().slice(0,10)}"></div>
+        <div class="field"><label>Tanggal Selesai Orientasi <span class="req">*</span></label><input type="date" name="tanggalSelesai" required value="${o.tanggalSelesai||''}"></div>
+        <div class="field"><label>Lokasi Penempatan <span class="req">*</span></label><input type="text" name="lokasiPenempatan" required value="${esc(o.lokasiPenempatan||defLok)}"></div>
+        <div class="field"><label>Program <span class="req">*</span></label><select name="program" required><option value="">- pilih -</option>${p.jenis==='RSDSN'?['Program rehabilitasi netra','Program mobilitas dan orientasi','Program kemandirian aktivitas sehari-hari','Program bina kerja'].map(x=>`<option ${o.program===x||(!o.program&&x===defProg)?'selected':''}>${x}</option>`).join(''):['Program perlindungan dan rehabilitasi anak','Program terapi trauma','Program pendampingan keluarga','Program bina kembali sekolah'].map(x=>`<option ${o.program===x||(!o.program&&x===defProg)?'selected':''}>${x}</option>`).join('')}</select></div>
+        <div class="field full"><label>Catatan Orientasi &amp; Penempatan</label><textarea name="catatan">${esc(o.catatan||'')}</textarea></div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn ghost" onclick="setView('identitas','${p.id}')">Batal</button><button type="submit" class="btn success">Selesaikan &amp; Tempatkan PM</button></div>
+    </form>
+  </div>`;
+}
+
+function submitOrientasi(e,id){
+  e.preventDefault();
+  const p=getPM(id); const fd=new FormData(e.target);
+  p.orientasi={tanggalMulai:fd.get('tanggalMulai'),tanggalSelesai:fd.get('tanggalSelesai'),lokasiPenempatan:fd.get('lokasiPenempatan'),program:fd.get('program'),catatan:fd.get('catatan')};
+  if(p.status==='terkontrak') p.status='terorientasi';
+  saveData(); toast('PM berhasil ditempatkan. Proses penerimaan selesai.');
+  setView('identitas', id);
+}
+
+/* ----- 12. LAPORAN ----- */
+function viewLaporan(){
+  const list = data.pm;
+  const rsdsn=list.filter(p=>p.jenis==='RSDSN');
+  const ampk=list.filter(p=>p.jenis==='AMPK');
+  const byStatus = (st)=>list.filter(p=>p.status===st).length;
+  const diterima=list.filter(p=>['ditetapkan','teregistrasi','terkontrak','terorientasi'].includes(p.status)).length;
+  const ditolak=list.filter(p=>p.status==='ditolak').length;
+  const selesai=list.filter(p=>p.status==='terorientasi').length;
+
+  const q=filterState.q.toLowerCase();
+  const filtered=list.filter(p=>{if(filterState.status!=='all'&&p.status!==filterState.status)return false;if(!q)return true;return (p.identitas.namaLengkap+' '+p.nomorPendaftaran+' '+p.jenis+' '+((p.registrasi||{}).nomorRegistrasi||'')).toLowerCase().includes(q);});
+
+  return `
+  <div class="page-head">
+    <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <h2>Laporan penerimaan PM</h2>
+      <div class="row">
+        <button class="btn ghost sm" onclick="window.print()">Cetak / PDF</button>
+        <button class="btn primary sm" onclick="downloadWord()">Unduh Word (.doc)</button>
+      </div>
+    </div>
+    <p>Ringkasan dan rekap penerimaan Penerima Manfaat (RSDSN + AMPK) per ${fmtDate(new Date().toISOString().slice(0,10))}.</p>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Tanda Tangan / TTE</p>
+    <p class="card-sub">Unggah gambar tanda tangan (JPG/PNG) untuk ditampilkan di laporan dan dokumen Word.</p>
+    <div class="row" style="align-items:center;gap:12px">
+      <input type="file" id="ttdInput" accept="image/*" onchange="uploadTTD(this)" style="font-size:.85rem">
+      <span id="ttdStatus" class="small muted">${safeStorage.getItem('sipm_ttd')?'TTD sudah diunggah':'Belum ada TTD'}</span>
+      ${safeStorage.getItem('sipm_ttd')?'<button class="btn ghost sm" onclick="removeTTD()">Hapus TTD</button>':''}
+    </div>
+    ${safeStorage.getItem('sipm_ttd')?`<div style="margin-top:10px"><img src="${safeStorage.getItem('sipm_ttd')}" alt="TTD" style="max-height:80px;border:1px solid var(--border);border-radius:6px;padding:4px;background:#fff"></div>`:''}
+  </div>
+
+  <div class="stat-grid">
+    ${statsCard('Total Calon PM', list.length, 'plain', MODE==='ALL'?`RSDSN ${rsdsn.length} / AMPK ${ampk.length}`:'')}
+    ${statsCard('Diterima', diterima, 'plain', 'ditetapkan s/d ditempatkan')}
+    ${statsCard('Ditolak', ditolak, 'plain', 'tidak direkomendasikan/ditolak')}
+    ${statsCard('Selesai Penempatan', selesai, 'plain', 'proses penerimaan selesai')}
+  </div>
+
+  <div class="card">
+    <p class="card-title">Rekap per Tahap Alur Penerimaan</p>
+    <p class="card-sub">Jumlah PM yang saat ini berada pada masing-masing tahap alur 8 langkah.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Tahap Alur</th><th>Status PM</th><th>Jumlah</th><th>% dari Total</th></tr></thead>
+      <tbody>
+      ${[
+        {step:'1. Pendaftaran calon PM', statuses:['terdaftar']},
+        {step:'2. Verifikasi administrasi', statuses:['terverifikasi']},
+        {step:'3. Identifikasi', statuses:['teridentifikasi']},
+        {step:'4. Asesmen', statuses:['terasesmen']},
+        {step:'5. Seleksi dan rekomendasi', statuses:['terseleksi']},
+        {step:'6. Penetapan penerimaan', statuses:['ditetapkan']},
+        {step:'7. Registrasi &amp; kontrak pelayanan', statuses:['teregistrasi','terkontrak']},
+        {step:'8. Orientasi dan penempatan', statuses:['terorientasi']}
+      ].map(f=>{const n=f.statuses.reduce((a,s)=>a+byStatus(s),0);const pct=list.length?Math.round(n/list.length*100):0;return `<tr><td>${f.step}</td><td>${f.statuses.map(s=>`<span class="tag ${STATUS_TAG[s]}">${STATUS_LABEL[s]}</span>`).join(' ')}</td><td class="num"><b>${n}</b></td><td class="num">${pct}%</td></tr>`}).join('')}
+      <tr><td>Ditolak (tidak direkomendasikan)</td><td><span class="tag bad">Ditolak</span></td><td class="num"><b>${ditolak}</b></td><td class="num">${list.length?Math.round(ditolak/list.length*100):0}%</td></tr>
+      <tr style="border-top:2px solid var(--border-strong)"><td colspan="2"><b>Total Calon PM</b></td><td class="num"><b>${list.length}</b></td><td class="num">100%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Perbandingan Fitur Khusus RSDSN vs AMPK</p>
+    <div class="table-wrap" style="border:none"><table class="compare">
+      <thead><tr><th>Fitur</th><th class="col-rsdsn">RSDSN</th><th class="col-ampk">AMPK</th></tr></thead>
+      <tbody>
+        <tr><td>Identifikasi</td><td class="col-rsdsn">Kondisi disabilitas netra</td><td class="col-ampk">Kasus dan risiko anak</td></tr>
+        <tr><td>Asesmen</td><td class="col-rsdsn">Fisik, sosial, psikologis, fungsional</td><td class="col-ampk">Psikologis, sosial, keluarga, perlindungan</td></tr>
+        <tr><td>Rekomendasi</td><td class="col-rsdsn">Program rehabilitasi</td><td class="col-ampk">Intervensi perlindungan</td></tr>
+        <tr><td>Penempatan</td><td class="col-rsdsn">Program rehabilitasi netra</td><td class="col-ampk">Program perlindungan dan rehabilitasi anak</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Daftar Penerima Manfaat</p>
+    <div class="toolbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Cari..." value="${esc(filterState.q)}" oninput="filterState.q=this.value; render()"></div>
+      <select onchange="filterState.status=this.value; render()"><option value="all" ${filterState.status==='all'?'selected':''}>Semua status</option>${Object.keys(STATUS_LABEL).map(s=>`<option value="${s}" ${filterState.status===s?'selected':''}>${STATUS_LABEL[s]}</option>`).join('')}</select>
+    </div>
+    ${filtered.length?`<div class="table-wrap"><table>
+      <thead><tr><th>No. Daftar</th><th>No. Registrasi</th><th>Nama</th><th>Jenis</th><th>Usia</th><th>SK</th><th>Status</th><th></th></tr></thead>
+      <tbody>${filtered.map(p=>`<tr><td>${esc(p.nomorPendaftaran)}</td><td>${esc((p.registrasi||{}).nomorRegistrasi||'-')}</td><td><b>${esc(p.identitas.namaLengkap)}</b></td><td><span class="tag ${p.jenis.toLowerCase()}">${p.jenis}</span></td><td>${age(p.identitas.tanggalLahir)}</td><td>${esc((p.penetapan||{}).nomorSK||'-')}</td><td><span class="tag ${STATUS_TAG[p.status]}">${STATUS_LABEL[p.status]}</span></td><td style="white-space:nowrap"><button class="btn ghost sm" onclick="setView('identitas','${p.id}')">Detail</button> <button class="btn danger sm" onclick="deletePM('${p.id}')">Hapus</button></td></tr>`).join('')}</tbody>
+    </table></div>`:emptyState('Tidak ada data.','Coba ubah filter atau kata kunci.')}
+  </div>
+
+  <div class="print-only small muted" style="margin-top:10px">Dicetak dari SI-PM UPT RSDSN &amp; AMPK Malang pada ${fmtDate(new Date().toISOString().slice(0,10))}.</div>
+  `;
+}
+
+
+function switchMode(m){
+  MODE = m;
+  safeStorage.setItem(MODE_KEY, m);
+  currentPMId = null;
+  setView(currentView);
+  toast('Mode diubah ke ' + (m==='ALL'?'SEMUA':m));
+}
+
+
+/* ---------- SETTINGS ---------- */
+function viewSettings(){
+  return `
+  <div class="page-head"><h2>Setting User & Password</h2><p>Ubah nama petugas yang tampil dan password akses aplikasi (disimpan lokal di browser).</p></div>
+  <div class="card">
+    <p class="card-title">Profil Petugas</p>
+    <form onsubmit="saveSettings(event)">
+      <div class="form-grid">
+        <div class="field full"><label>Nama Petugas <span class="req">*</span></label>
+          <input type="text" name="nama" required value="${esc(currentUser.nama||'')}" placeholder="Nama lengkap petugas">
+        </div>
+        <div class="field"><label>Password Baru</label>
+          <input type="password" name="password" placeholder="Kosongkan jika tidak diubah" autocomplete="new-password">
+        </div>
+        <div class="field"><label>Konfirmasi Password</label>
+          <input type="password" name="password2" placeholder="Ulangi password baru" autocomplete="new-password">
+        </div>
+      </div>
+      <p class="small muted" style="margin-top:10px">Password saat ini: <code>${esc(currentUser.password||'admin123')}</code> (demo)</p>
+      <div class="form-actions">
+        <button type="submit" class="btn primary">Simpan Pengaturan</button>
+      </div>
+    </form>
+  </div>
+  <div class="card">
+    <p class="card-title">Background Landing</p>
+    <p class="card-sub">Ganti gambar background halaman awal. Unggah gambar JPG/PNG (disarankan transparan atau soft).</p>
+    <div class="row" style="align-items:center;gap:12px;margin-bottom:10px">
+      <input type="file" id="bgInput" accept="image/*" onchange="uploadBackground(this)" style="font-size:.85rem">
+      <button class="btn ghost sm" onclick="resetBackground()">Kembali ke Default</button>
+    </div>
+    <div id="bgPreview" class="small muted">Background saat ini: ${safeStorage.getItem('sipm_bg')?'Gambar kustom':'Logo SIPENA (default)'}</div>
+    ${safeStorage.getItem('sipm_bg')?`<img src="${safeStorage.getItem('sipm_bg')}" alt="BG" style="max-height:100px;margin-top:8px;border-radius:8px;border:1px solid var(--border)">`:''}
+  </div>
+
+  <div class="card">
+    <p class="card-title">Backup & Restore Data (Database)</p>
+    <p class="card-sub">Unduh seluruh data sebagai file JSON atau pulihkan dari backup. Berguna untuk memindahkan data antar komputer.</p>
+    <div class="row">
+      <button class="btn" onclick="downloadBackup()">Unduh Backup (.json)</button>
+      <label class="btn ghost" style="cursor:pointer">Pulihkan dari File
+        <input type="file" accept=".json" onchange="restoreBackup(this)" style="display:none">
+      </label>
+    </div>
+  </div>
+  <div class="card">
+    <p class="card-title">Reset Data</p>
+    <p class="card-sub">Hati-hati: menghapus seluruh data calon PM yang tersimpan di browser ini.</p>
+    <button class="btn danger" onclick="if(confirm('Yakin hapus SEMUA data PM? Tindakan ini tidak bisa dibatalkan.')){ safeStorage.removeItem(STORAGE_KEY); location.reload(); }">Reset Semua Data PM</button>
+  </div>`;
+}
+function saveSettings(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const nama = fd.get('nama').trim();
+  const pw = fd.get('password');
+  const pw2 = fd.get('password2');
+  if(pw || pw2){
+    if(pw !== pw2){ toast('Password dan konfirmasi tidak cocok'); return; }
+    if(pw.length < 4){ toast('Password minimal 4 karakter'); return; }
+    currentUser.password = pw;
+  }
+  currentUser.nama = nama || 'Admin Penerimaan';
+  saveUser(currentUser);
+  toast('Pengaturan tersimpan');
+  setView('settings');
+}
+
+/* ---------- EDIT / HAPUS PM ---------- */
+function editPM(id){
+  const p = getPM(id);
+  if(!p) return;
+  currentPMId = id;
+  // Pre-fill pendaftaran form by temporarily storing edit mode
+  window.editModeId = id;
+  setView('pendaftaran');
+}
+function deletePM(id){
+  const p = getPM(id);
+  if(!p) return;
+  if(!confirm('Hapus data calon PM "' + (p.identitas.namaLengkap||id) + '"?\nTindakan ini tidak bisa dibatalkan.')) return;
+  data.pm = data.pm.filter(x => x.id !== id);
+  saveData();
+  toast('Data berhasil dihapus');
+  if(currentPMId === id) currentPMId = null;
+  setView(currentView);
+}
+
+
+/* ---------- WORD EXPORT & TTD ---------- */
+function uploadTTD(input){
+  const file = input.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){ toast('File harus berupa gambar'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    safeStorage.setItem('sipm_ttd', e.target.result);
+    toast('Tanda tangan berhasil diunggah');
+    setView('laporan');
+  };
+  reader.readAsDataURL(file);
+}
+function removeTTD(){
+  safeStorage.removeItem('sipm_ttd');
+  toast('TTD dihapus');
+  setView('laporan');
+}
+function downloadWord(){
+  const list = data.pm;
+  const ttd = safeStorage.getItem('sipm_ttd') || '';
+  const today = fmtDate(new Date().toISOString().slice(0,10));
+  const rows = list.map(p=>`<tr>
+    <td>${esc(p.nomorPendaftaran)}</td>
+    <td>${esc(p.identitas.namaLengkap)}</td>
+    <td>${esc(p.jenis)}</td>
+    <td>${age(p.identitas.tanggalLahir)}</td>
+    <td>${fmtDate(p.tanggalPendaftaran)}</td>
+    <td>${STATUS_LABEL[p.status]||p.status}</td>
+    <td>${esc((p.registrasi||{}).nomorRegistrasi||'-')}</td>
+    <td>${esc((p.penetapan||{}).nomorSK||'-')}</td>
+  </tr>`).join('');
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
+  <head><meta charset="utf-8"><title>Laporan Penerimaan PM SIPENA</title>
+  <style>
+    body{font-family:Arial,sans-serif;font-size:11pt}
+    h1{font-size:16pt;text-align:center}
+    h2{font-size:13pt}
+    table{border-collapse:collapse;width:100%;margin:12px 0}
+    th,td{border:1px solid #333;padding:6px 8px;text-align:left}
+    th{background:#f0f0f0}
+    .footer{margin-top:30px;text-align:right}
+    .ttd{max-height:90px}
+  </style></head><body>
+  <div style="text-align:center;margin-bottom:16px">
+    <strong>PEMERINTAH PROVINSI JAWA TIMUR</strong><br>
+    <strong>DINAS SOSIAL</strong><br>
+    <strong>UPT REHABILITASI SOSIAL BINA NETRA DAN ANAK MEMERLUKAN PERLINDUNGAN KHUSUS MALANG</strong>
+  </div>
+  <h1>LAPORAN PENERIMAAN PENERIMA MANFAAT</h1>
+  <p style="text-align:center">Per tanggal ${today}</p>
+  <h2>Rekap Jumlah</h2>
+  <table>
+    <tr><th>Jenis</th><th>Jumlah</th></tr>
+    <tr><td>RSDSN</td><td>${list.filter(p=>p.jenis==='RSDSN').length}</td></tr>
+    <tr><td>AMPK</td><td>${list.filter(p=>p.jenis==='AMPK').length}</td></tr>
+    <tr><td><b>Total</b></td><td><b>${list.length}</b></td></tr>
+  </table>
+  <h2>Daftar Penerima Manfaat</h2>
+  <table>
+    <tr><th>No. Daftar</th><th>Nama</th><th>Jenis</th><th>Usia</th><th>Tgl Daftar</th><th>Status</th><th>No. Registrasi</th><th>No. SK</th></tr>
+    ${rows}
+  </table>
+  <div class="footer">
+    <p>Malang, ${today}</p>
+    <p>Kepala UPT RSDSN & AMPK Malang</p>
+    ${ttd?`<img class="ttd" src="${ttd}" alt="TTD">`:''}
+    <p style="margin-top:40px"><b>${esc(currentUser.nama||'Admin Penerimaan')}</b></p>
+  </div>
+  </body></html>`;
+  const blob = new Blob(['\ufeff', html], {type:'application/msword'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Laporan_Penerimaan_PM_SIPENA_'+today.replace(/\//g,'-')+'.doc';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Dokumen Word berhasil diunduh');
+}
+
+
+function downloadBackup(){
+  const blob = new Blob([JSON.stringify({pm:data.pm, user:currentUser, exported:new Date().toISOString()}, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'SIPENA_Backup_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Backup berhasil diunduh');
+}
+function restoreBackup(input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const obj = JSON.parse(e.target.result);
+      if(!obj.pm || !Array.isArray(obj.pm)) throw new Error('Format tidak valid');
+      if(!confirm('Pulihkan data dari backup? Data saat ini akan diganti.')) return;
+      data.pm = obj.pm;
+      saveData();
+      if(obj.user){ currentUser = obj.user; saveUser(currentUser); }
+      toast('Data berhasil dipulihkan');
+      setView('dashboard');
+    }catch(err){ toast('Gagal membaca file backup'); }
+  };
+  reader.readAsText(file);
+}
+
+
+function uploadBackground(input){
+  const file = input.files[0];
+  if(!file || !file.type.startsWith('image/')){ toast('Pilih file gambar'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    safeStorage.setItem('sipm_bg', e.target.result);
+    applyBackground();
+    toast('Background berhasil diganti');
+    setView('settings');
+  };
+  reader.readAsDataURL(file);
+}
+function resetBackground(){
+  safeStorage.removeItem('sipm_bg');
+  applyBackground();
+  toast('Background dikembalikan ke default');
+  setView('settings');
+}
+function applyBackground(){
+  const bg = safeStorage.getItem('sipm_bg');
+  const landing = document.getElementById('landing');
+  if(!landing) return;
+  if(bg){
+    landing.style.backgroundImage = `url('${bg}')`;
+    landing.style.backgroundSize = 'cover';
+    landing.style.backgroundPosition = 'center';
+  }else{
+    landing.style.backgroundImage = "url('logo-sipena.png')";
+    landing.style.backgroundSize = '380px';
+    landing.style.backgroundPosition = 'center 80px';
+  }
+}
+
+
+/* ---------- FORMULIR LAYANAN ---------- */
+const FORMS = [
+  {id:'F-01', title:'Permohonan/Rujukan, Skrining, dan Registrasi', jenis:'semua'},
+  {id:'F-02', title:'Checklist Orientasi, Hak, Persetujuan, dan Kontrak Layanan', jenis:'semua'},
+  {id:'F-03A', title:'Skrining dan Asesmen Awal Anak Perlindungan Khusus', jenis:'AMPK'},
+  {id:'F-04', title:'Rencana Layanan Individual', jenis:'semua'},
+  {id:'F-05', title:'Catatan Pelaksanaan Layanan dan Monitoring Kemajuan', jenis:'semua'},
+  {id:'F-06', title:'Notula Pembahasan Kasus / Tinjauan Rencana Layanan', jenis:'semua'},
+  {id:'F-07', title:'Rujukan dan Serah Terima', jenis:'semua'},
+  {id:'F-08', title:'Laporan Insiden dan Tindakan Segera', jenis:'semua'},
+  {id:'F-10', title:'Evaluasi Layanan dan Umpan Balik Penerima Manfaat', jenis:'semua'},
+  {id:'F-11', title:'Evaluasi Akhir, Terminasi, Pemulangan, dan Tindak Lanjut', jenis:'semua'},
+  {id:'F-12', title:'Checklist Kebutuhan Komunikasi dan Aksesibilitas', jenis:'semua'},
+  {id:'F-13N', title:'Evaluasi Kemandirian dan Capaian Disabilitas Sensorik Netra', jenis:'RSDSN'},
+  {id:'F-14', title:'Checklist Keselamatan dan Lingkungan Aksesibel / Ramah Anak', jenis:'semua'}
+];
+
+const FORM_FIELDS = {
+  'F-01': [
+    {sec:'A. Data Identitas', fields:[
+      ['namaLengkap','Nama Lengkap','text'],['nik','NIK','text'],['ttl','Tempat, Tanggal Lahir','text'],
+      ['jenisKelamin','Jenis Kelamin','text'],['agama','Agama','text'],['alamat','Alamat Lengkap','textarea'],
+      ['telepon','Nomor Telepon / HP','text'],['pendidikan','Pendidikan Terakhir','text'],
+      ['statusPerkawinan','Status Perkawinan','text'],['jenisDisabilitas','Jenis Disabilitas','text'],
+      ['tingkatKeparahan','Tingkat Keparahan','text']
+    ]},
+    {sec:'B. Data Rujukan', fields:[
+      ['asalRujukan','Asal Rujukan','text'],['namaInstitusi','Nama Institusi / Pihak yang Merujuk','text'],
+      ['alamatInstitusi','Alamat Institusi','text'],['nomorSurat','Nomor Surat Rujukan','text'],
+      ['tglSurat','Tanggal Surat Rujukan','date'],['alasanRujukan','Alasan Rujukan','textarea'],
+      ['layananDirekomendasikan','Layanan yang Direkomendasikan','text']
+    ]},
+    {sec:'C. Hasil Skrining Awal', fields:[
+      ['kondisiPenglihatan','Kondisi Penglihatan','textarea'],['kemampuanOrientasi','Kemampuan Orientasi Mobilitas','textarea'],
+      ['kemampuanADL','Kemampuan Aktivitas Sehari-hari','textarea'],['kondisiPsikologis','Kondisi Psikologis','textarea'],
+      ['kondisiSosial','Kondisi Sosial','textarea'],['kebutuhanKhusus','Kebutuhan Khusus','textarea'],
+      ['rekomendasiLayanan','Rekomendasi Layanan','textarea'],['catatanSkrining','Catatan Skrining','textarea']
+    ]},
+    {sec:'D. Registrasi', fields:[
+      ['nomorRegistrasi','Nomor Registrasi','text'],['tglRegistrasi','Tanggal Registrasi','date'],
+      ['jenisLayanan','Jenis Layanan yang Diikuti','text'],['statusPM','Status Penerima Manfaat','text'],
+      ['programDirekomendasikan','Program yang Direkomendasikan','text'],['petugasRegistrasi','Petugas Registrasi','text']
+    ]}
+  ],
+  'F-14': [
+    {sec:'B. Checklist Keselamatan', fields:[
+      ['jalurEvakuasi','Jalur evakuasi jelas dan tidak terhalang','check'],
+      ['apd','Alat pemadam kebakaran tersedia dan berfungsi','check'],
+      ['peneranganDarurat','Penerangan darurat berfungsi','check'],
+      ['lantai','Lantai tidak licin / berbahaya','check'],
+      ['bendaTajam','Tidak ada benda tajam yang terbuka','check'],
+      ['pintuDarurat','Pintu darurat mudah diakses','check'],
+      ['sistemKeamanan','Sistem keamanan berfungsi','check']
+    ]},
+    {sec:'C. Checklist Lingkungan Aksesibel', fields:[
+      ['guidingBlock','Tersedia guiding block','check'],
+      ['ramp','Tersedia ramp / jalur landai','check'],
+      ['toiletAksesibel','Tersedia toilet aksesibel','check'],
+      ['pintuLebar','Pintu cukup lebar','check'],
+      ['signage','Signage dapat diakses (Braille / kontras)','check'],
+      ['bebasHambatan','Area bebas dari hambatan','check']
+    ]},
+    {sec:'D. Checklist Ramah Anak', fields:[
+      ['areaBermain','Area bermain aman','check'],
+      ['bahanBerbahaya','Tidak ada bahan berbahaya','check'],
+      ['pengawasan','Pengawasan memadai','check'],
+      ['fasilitasUsia','Fasilitas sesuai usia anak','check']
+    ]},
+    {sec:'E. Catatan dan Rekomendasi', fields:[
+      ['catatan','Catatan dan Rekomendasi','textarea']
+    ]}
+  ],
+  'F-12': [
+    {sec:'B. Checklist Kebutuhan Komunikasi', fields:[
+      ['braille','Menggunakan Braille','check'],['hurufBesar','Menggunakan Huruf Cetak Besar','check'],
+      ['alatDengar','Menggunakan Alat Bantu Dengar','check'],['bahasaIsyarat','Menggunakan Bahasa Isyarat','check'],
+      ['pendampingKomunikasi','Membutuhkan Pendamping Komunikasi','check'],
+      ['formatAudio','Membutuhkan Informasi dalam Format Audio','check'],
+      ['formatDigital','Membutuhkan Informasi dalam Format Digital Aksesibel','check']
+    ]},
+    {sec:'C. Checklist Kebutuhan Aksesibilitas', fields:[
+      ['tongkatPutih','Membutuhkan Tongkat Putih','check'],['kursiRoda','Membutuhkan Kursi Roda','check'],
+      ['guidingBlock','Membutuhkan Guiding Block','check'],['ramp','Membutuhkan Ramp / Jalur Landai','check'],
+      ['toiletAksesibel','Membutuhkan Toilet Aksesibel','check'],
+      ['pendampingMobilitas','Membutuhkan Pendamping Mobilitas','check'],
+      ['penyesuaianLingkungan','Membutuhkan Penyesuaian Lingkungan','check']
+    ]},
+    {sec:'D. Catatan Tambahan', fields:[['catatan','Catatan Tambahan','textarea']]}
+  ]
+,
+  'F-02': [
+    {sec:'A. Checklist Orientasi', fields:[
+      ['tataTertib','Penjelasan tata tertib asrama / layanan','check'],
+      ['jadwalHarian','Penjelasan jadwal kegiatan harian','check'],
+      ['fasilitas','Penjelasan fasilitas yang tersedia','check'],
+      ['aturanKeamanan','Penjelasan aturan keamanan dan keselamatan','check'],
+      ['prosedurPengaduan','Penjelasan prosedur pengaduan / keluhan','check'],
+      ['pengenalanPetugas','Pengenalan petugas yang bertanggung jawab','check'],
+      ['hakKewajiban','Penjelasan hak dan kewajiban penerima manfaat','check']
+    ]},
+    {sec:'B. Checklist Hak Penerima Manfaat', fields:[
+      ['hakLayanan','Hak mendapatkan layanan rehabilitasi yang layak','check'],
+      ['hakPrivasi','Hak atas privasi dan kerahasiaan data pribadi','check'],
+      ['hakPendapat','Hak menyampaikan pendapat / keluhan','check'],
+      ['hakInformasi','Hak mendapatkan informasi tentang program','check'],
+      ['hakTolak','Hak menolak layanan (dengan konsekuensi)','check'],
+      ['hakPerlindungan','Hak mendapatkan perlindungan dari kekerasan','check']
+    ]},
+    {sec:'C. Persetujuan Layanan', fields:[
+      ['namaPM','Nama Penerima Manfaat','text'],['nik','NIK','text'],
+      ['namaWali','Nama Wali / Pendamping','text'],['statusPersetujuan','Status Persetujuan','text'],
+      ['tglPersetujuan','Tanggal Persetujuan','date'],['catatanPersetujuan','Catatan Persetujuan','textarea']
+    ]},
+    {sec:'D. Kontrak Layanan', fields:[
+      ['jenisLayanan','Jenis Layanan yang Disepakati','text'],['durasi','Durasi Layanan','text'],
+      ['tglMulai','Tanggal Mulai','date'],['tglBerakhir','Tanggal Berakhir','date'],
+      ['kewajibanPM','Kewajiban Penerima Manfaat','textarea'],['kewajibanUPT','Kewajiban Pihak UPT','textarea']
+    ]}
+  ],
+  'F-03A': [
+    {sec:'A. Data Identitas Anak', fields:[
+      ['namaAnak','Nama Lengkap Anak','text'],['nik','NIK / Nomor Identitas','text'],
+      ['ttl','Tempat, Tanggal Lahir','text'],['usia','Usia','text'],
+      ['jenisKelamin','Jenis Kelamin','text'],['alamat','Alamat','textarea'],
+      ['namaOrtu','Nama Orang Tua / Wali','text'],['kontakOrtu','Kontak Orang Tua / Wali','text']
+    ]},
+    {sec:'B. Skrining Awal', fields:[
+      ['alasanSkrining','Alasan Skrining / Rujukan','textarea'],['kondisiFisik','Kondisi Fisik','textarea'],
+      ['kondisiPsikologis','Kondisi Psikologis','textarea'],['kondisiSosial','Kondisi Sosial','textarea'],
+      ['indikasiPerlindungan','Indikasi Perlindungan Khusus','textarea'],['risiko','Risiko yang Teridentifikasi','textarea'],
+      ['kebutuhanSegera','Kebutuhan Segera','textarea']
+    ]},
+    {sec:'C. Asesmen Awal', fields:[
+      ['riwayatKeluarga','Riwayat Keluarga','textarea'],['kondisiTempatTinggal','Kondisi Tempat Tinggal','textarea'],
+      ['aksesPendidikan','Akses Pendidikan','textarea'],['dukunganKeluarga','Dukungan Keluarga','textarea'],
+      ['permasalahanUtama','Permasalahan Utama','textarea'],['potensiAnak','Potensi / Kekuatan Anak','textarea']
+    ]},
+    {sec:'D. Rekomendasi', fields:[
+      ['kesimpulan','Kesimpulan Skrining','textarea'],['tingkatUrgensi','Tingkat Urgensi','text'],
+      ['rekomendasiTindak','Rekomendasi Tindak Lanjut','textarea'],['rujukanLain','Rujukan ke Layanan Lain','text']
+    ]}
+  ],
+  'F-04': [
+    {sec:'A. Data Identitas', fields:[
+      ['namaLengkap','Nama Lengkap','text'],['nik','NIK','text'],['nomorRegistrasi','Nomor Registrasi','text'],
+      ['tglMulai','Tanggal Mulai Layanan','date'],['jenisDisabilitas','Jenis Disabilitas','text'],
+      ['program','Program yang Diikuti','text']
+    ]},
+    {sec:'B. Tujuan Layanan Individual', fields:[
+      ['tujuanUmum','Tujuan Umum','textarea'],['tujuanKhusus1','Tujuan Khusus 1','text'],
+      ['tujuanKhusus2','Tujuan Khusus 2','text'],['tujuanKhusus3','Tujuan Khusus 3','text'],
+      ['indikator','Indikator Keberhasilan','textarea']
+    ]},
+    {sec:'C. Rencana Intervensi', fields:[
+      ['kegiatan1','Kegiatan 1','text'],['pj1','Penanggung Jawab 1','text'],
+      ['waktu1','Waktu Pelaksanaan 1','text'],['target1','Target 1','text'],
+      ['kegiatan2','Kegiatan 2','text'],['pj2','Penanggung Jawab 2','text']
+    ]},
+    {sec:'D. Rencana Evaluasi', fields:[
+      ['metodeEvaluasi','Metode Evaluasi','text'],['jadwalEvaluasi','Jadwal Evaluasi','text'],
+      ['kriteriaKeberhasilan','Kriteria Keberhasilan','textarea'],['rencanaTindak','Rencana Tindak Lanjut','textarea']
+    ]}
+  ],
+  'F-05': [
+    {sec:'A. Data Identitas', fields:[
+      ['namaLengkap','Nama Lengkap','text'],['nomorRegistrasi','Nomor Registrasi','text'],
+      ['program','Program / Layanan','text'],['tglKegiatan','Tanggal Kegiatan','date']
+    ]},
+    {sec:'B. Catatan Pelaksanaan Layanan', fields:[
+      ['jenisKegiatan','Jenis Kegiatan','text'],['waktuPelaksanaan','Waktu Pelaksanaan','text'],
+      ['tempat','Tempat Pelaksanaan','text'],['petugas','Petugas Pelaksana','text'],
+      ['deskripsi','Deskripsi Kegiatan','textarea'],['metode','Metode yang Digunakan','text'],
+      ['alatMedia','Alat / Media yang Digunakan','text'],['kendala','Kendala yang Dihadapi','textarea'],
+      ['solusi','Solusi / Tindak Lanjut','textarea']
+    ]},
+    {sec:'C. Monitoring Kemajuan', fields:[
+      ['kemajuan','Kemajuan yang Dicapai','textarea'],['perubahanPerilaku','Perubahan Perilaku / Kemampuan','textarea'],
+      ['tingkatPartisipasi','Tingkat Partisipasi','text'],['pencapaianTarget','Pencapaian Target','text'],
+      ['hambatan','Hambatan yang Masih Ada','textarea'],['rekomendasi','Rekomendasi Lanjutan','textarea']
+    ]}
+  ],
+  'F-06': [
+    {sec:'A. Data Rapat', fields:[
+      ['tglRapat','Tanggal Rapat','date'],['waktu','Waktu','text'],['tempat','Tempat','text'],
+      ['pimpinanRapat','Pimpinan Rapat','text'],['notulis','Notulis','text'],
+      ['namaPM','Nama Penerima Manfaat','text'],['nomorRegistrasi','Nomor Registrasi','text']
+    ]},
+    {sec:'C. Hasil Pembahasan Kasus', fields:[
+      ['latarBelakang','Latar Belakang Kasus','textarea'],['permasalahanUtama','Permasalahan Utama','textarea'],
+      ['perkembangan','Perkembangan Saat Ini','textarea'],['pembahasan','Pembahasan / Diskusi','textarea'],
+      ['kesimpulan','Kesimpulan','textarea'],['rekomendasi','Rekomendasi','textarea']
+    ]},
+    {sec:'D. Tinjauan Rencana Layanan', fields:[
+      ['statusRencana','Status Rencana Layanan','text'],['perubahan','Perubahan yang Disepakati','textarea'],
+      ['tindakLanjut','Tindak Lanjut','textarea'],['penanggungJawab','Penanggung Jawab','text'],
+      ['jadwal','Jadwal Tindak Lanjut','text']
+    ]}
+  ],
+  'F-07': [
+    {sec:'A. Data Penerima Manfaat', fields:[
+      ['namaLengkap','Nama Lengkap','text'],['nik','NIK','text'],['nomorRegistrasi','Nomor Registrasi','text'],
+      ['jenisDisabilitas','Jenis Disabilitas','text'],['alamat','Alamat','textarea']
+    ]},
+    {sec:'B. Data Rujukan', fields:[
+      ['asalRujukan','Asal Rujukan','text'],['tujuanRujukan','Tujuan Rujukan','text'],
+      ['namaInstitusi','Nama Institusi Tujuan','text'],['alamatInstitusi','Alamat Institusi Tujuan','text'],
+      ['alasanRujukan','Alasan Rujukan','textarea'],['layananDirekomendasikan','Layanan yang Direkomendasikan','text'],
+      ['nomorSurat','Nomor Surat Rujukan','text'],['tglRujukan','Tanggal Rujukan','date']
+    ]},
+    {sec:'C. Serah Terima', fields:[
+      ['tglSerah','Tanggal Serah Terima','date'],['tempatSerah','Tempat Serah Terima','text'],
+      ['dokumen','Dokumen yang Diserahkan','textarea'],['kondisiPM','Kondisi Penerima Manfaat','textarea'],
+      ['catatanSerah','Catatan Serah Terima','textarea'],['pihakMenyerahkan','Pihak yang Menyerahkan','text'],
+      ['pihakMenerima','Pihak yang Menerima','text']
+    ]}
+  ],
+  'F-08': [
+    {sec:'A. Data Insiden', fields:[
+      ['tglKejadian','Tanggal Kejadian','date'],['waktuKejadian','Waktu Kejadian','text'],
+      ['tempatKejadian','Tempat Kejadian','text'],['jenisInsiden','Jenis Insiden','text'],
+      ['namaTerlibat','Nama yang Terlibat','text'],['statusTerlibat','Status yang Terlibat','text'],
+      ['deskripsi','Deskripsi Kejadian','textarea']
+    ]},
+    {sec:'B. Tindakan Segera', fields:[
+      ['tindakanPertama','Tindakan Pertama','textarea'],['petugasMenangani','Petugas yang Menangani','text'],
+      ['waktuTindakan','Waktu Tindakan','text'],['bantuan','Bantuan yang Diberikan','textarea'],
+      ['rujukan','Rujukan / Pelaporan','text'],['kondisiSetelah','Kondisi Setelah Tindakan','textarea']
+    ]},
+    {sec:'C. Analisis dan Tindak Lanjut', fields:[
+      ['penyebab','Penyebab Insiden','textarea'],['dampak','Dampak yang Terjadi','textarea'],
+      ['tindakanPencegahan','Tindakan Pencegahan','textarea'],['rekomendasi','Rekomendasi','textarea'],
+      ['pjTindak','Penanggung Jawab Tindak Lanjut','text'],['statusPenyelesaian','Status Penyelesaian','text']
+    ]}
+  ],
+  'F-10': [
+    {sec:'A. Data Penerima Manfaat', fields:[
+      ['namaLengkap','Nama Lengkap','text'],['nomorRegistrasi','Nomor Registrasi','text'],
+      ['program','Program / Layanan','text'],['periode','Periode Evaluasi','text']
+    ]},
+    {sec:'B. Evaluasi Layanan', fields:[
+      ['kualitasLayanan','Kualitas Layanan','text'],['ketepatanWaktu','Ketepatan Waktu Layanan','text'],
+      ['kesesuaianProgram','Kesesuaian Program','text'],['sikapPetugas','Sikap Petugas','text'],
+      ['fasilitas','Fasilitas yang Diberikan','text'],['kemajuan','Kemajuan yang Dirasakan','textarea'],
+      ['catatanEvaluasi','Catatan Evaluasi','textarea']
+    ]},
+    {sec:'C. Umpan Balik', fields:[
+      ['halDisukai','Hal yang Disukai','textarea'],['halDiperbaiki','Hal yang Perlu Diperbaiki','textarea'],
+      ['saran','Saran / Masukan','textarea'],['tingkatKepuasan','Tingkat Kepuasan','text'],
+      ['harapan','Harapan ke Depan','textarea']
+    ]}
+  ],
+  'F-11': [
+    {sec:'A. Data Penerima Manfaat', fields:[
+      ['namaLengkap','Nama Lengkap','text'],['nomorRegistrasi','Nomor Registrasi','text'],
+      ['program','Program yang Diikuti','text'],['tglMulai','Tanggal Mulai Layanan','date'],
+      ['tglEvaluasi','Tanggal Evaluasi Akhir','date']
+    ]},
+    {sec:'B. Evaluasi Akhir', fields:[
+      ['pencapaianTujuan','Pencapaian Tujuan','textarea'],['kemajuanFungsional','Kemajuan Fungsional','textarea'],
+      ['kemajuanSosial','Kemajuan Sosial','textarea'],['kemandirian','Kemandirian yang Dicapai','textarea'],
+      ['kesimpulan','Kesimpulan Evaluasi','textarea']
+    ]},
+    {sec:'C. Terminasi Layanan', fields:[
+      ['alasanTerminasi','Alasan Terminasi','textarea'],['tglTerminasi','Tanggal Terminasi','date'],
+      ['statusTerminasi','Status Terminasi','text'],['dokumen','Dokumen yang Dilengkapi','textarea']
+    ]},
+    {sec:'D. Pemulangan', fields:[
+      ['tglPemulangan','Tanggal Pemulangan','date'],['tujuanPemulangan','Tujuan Pemulangan','text'],
+      ['alamatTujuan','Alamat Tujuan','textarea'],['pihakMenjemput','Pihak yang Menjemput','text'],
+      ['kondisiPemulangan','Kondisi Saat Pemulangan','textarea']
+    ]},
+    {sec:'E. Rencana Tindak Lanjut', fields:[
+      ['rujukanPasca','Rujukan Pasca Layanan','text'],['programLanjutan','Program Lanjutan','text'],
+      ['dukungan','Dukungan yang Diperlukan','textarea'],['jadwalMonitoring','Jadwal Monitoring','text'],
+      ['penanggungJawab','Penanggung Jawab','text']
+    ]}
+  ],
+  'F-13N': [
+    {sec:'A. Data Identitas', fields:[
+      ['namaLengkap','Nama Lengkap','text'],['nomorRegistrasi','Nomor Registrasi','text'],
+      ['program','Program yang Diikuti','text'],['periode','Periode Evaluasi','text']
+    ]},
+    {sec:'B. Evaluasi Kemandirian', fields:[
+      ['orientasiMobilitas','Orientasi dan Mobilitas','textarea'],['adl','Aktivitas Kehidupan Sehari-hari (ADL)','textarea'],
+      ['membacaBraille','Kemampuan Membaca Braille','textarea'],['menulisBraille','Kemampuan Menulis Braille','textarea'],
+      ['alatBantu','Penggunaan Alat Bantu','textarea'],['komunikasi','Kemampuan Komunikasi','textarea'],
+      ['kemandirianSosial','Kemandirian Sosial','textarea'],['catatanKemandirian','Catatan Kemandirian','textarea']
+    ]},
+    {sec:'C. Capaian Program', fields:[
+      ['tujuanDicapai','Tujuan yang Dicapai','textarea'],['tingkatPencapaian','Tingkat Pencapaian','text'],
+      ['keterampilan','Keterampilan yang Dikuasai','textarea'],['perubahanPerilaku','Perubahan Perilaku','textarea'],
+      ['hambatan','Hambatan yang Masih Ada','textarea']
+    ]},
+    {sec:'D. Rekomendasi', fields:[
+      ['kesimpulan','Kesimpulan Evaluasi','textarea'],['rekomendasiLanjutan','Rekomendasi Lanjutan','textarea'],
+      ['programDirekomendasikan','Program yang Direkomendasikan','text']
+    ]}
+  ]};
+
+function viewFormulir(){
+  const list = listPM();
+  return `
+  <div class="page-head"><h2>Formulir Layanan</h2><p>Isi dan cetak formulir standar UPT. Data PM dapat diisi otomatis.</p></div>
+  <div class="card">
+    <p class="card-title">Pilih Formulir untuk Diisi</p>
+    <div class="form-grid">
+      <div class="field"><label>Formulir</label>
+        <select id="isiFormSelect" onchange="renderFormFields()">${FORMS.map(f=>`<option value="${f.id}">${f.id} - ${f.title}</option>`).join('')}</select>
+      </div>
+      <div class="field"><label>Pilih PM (opsional, untuk isi otomatis)</label>
+        <select id="isiPmSelect"><option value="">-- tanpa PM --</option>${list.map(p=>`<option value="${p.id}">${esc(p.identitas.namaLengkap)} (${p.nomorPendaftaran})</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="field"><label>Petugas Pengisi (dari data pegawai)</label>
+      <select id="petugasSelect"><option value="">-- pilih petugas --</option>${pegawaiList.map(p=>`<option value="${esc(p.nama)}|${esc(p.nip)}">${esc(p.nama)} — ${esc(p.jabatan)}</option>`).join('')}</select>
+    </div>
+    <div class="form-actions"><button class="btn primary" onclick="renderFormFields()">Tampilkan Formulir</button></div>
+  </div>
+  <div id="formFieldsArea"></div>`;
+}
+
+function renderFormFields(){
+  const formId = document.getElementById('isiFormSelect').value;
+  const pmId = document.getElementById('isiPmSelect').value;
+  const pm = pmId ? getPM(pmId) : null;
+  const fields = FORM_FIELDS[formId] || [];
+  const area = document.getElementById('formFieldsArea');
+  if(!fields.length){
+    area.innerHTML = '<div class="card"><p>Formulir ini belum memiliki field detail. Gunakan tombol cetak di daftar.</p></div>';
+    return;
+  }
+  let html = `<div class="card"><p class="card-title">${formId} — ${FORMS.find(f=>f.id===formId).title}</p>
+    <form id="formIsi" onsubmit="saveAndPrintForm(event,'${formId}')">`;
+  fields.forEach(sec=>{
+    html += `<p class="card-sub" style="margin-top:14px"><b>${sec.sec}</b></p><div class="form-grid">`;
+    sec.fields.forEach(([name,label,type])=>{
+      let val = '';
+      if(pm){
+        if(name==='namaLengkap') val = pm.identitas.namaLengkap||'';
+        else if(name==='nik') val = pm.identitas.nik||'';
+        else if(name==='ttl') val = (pm.identitas.tempatLahir||'')+', '+(pm.identitas.tanggalLahir||'');
+        else if(name==='jenisKelamin') val = pm.identitas.jenisKelamin||'';
+        else if(name==='alamat') val = pm.identitas.alamat||'';
+        else if(name==='telepon') val = pm.identitas.telepon||'';
+        else if(name==='nomorRegistrasi') val = pm.nomorPendaftaran||'';
+      }
+      if(type==='check'){
+        html += `<div class="field inline"><input type="checkbox" name="${name}" id="${name}"><label for="${name}">${label}</label></div>`;
+      }else if(type==='textarea'){
+        html += `<div class="field full"><label>${label}</label><textarea name="${name}">${esc(val)}</textarea></div>`;
+      }else if(type==='date'){
+        html += `<div class="field"><label>${label}</label><input type="date" name="${name}" value="${val}"></div>`;
+      }else{
+        html += `<div class="field"><label>${label}</label><input type="text" name="${name}" value="${esc(val)}"></div>`;
+      }
+    });
+    html += `</div>`;
+  });
+  html += `<div class="form-actions">
+      <button type="button" class="btn ghost" onclick="document.getElementById('formFieldsArea').innerHTML=''">Batal</button>
+      <button type="submit" class="btn primary">Simpan & Cetak</button>
+      <button type="button" class="btn" onclick="printCurrentForm('${formId}')">Cetak Saja</button>
+    </div></form></div>`;
+  area.innerHTML = html;
+}
+
+function saveAndPrintForm(e, formId){
+  e.preventDefault();
+  printCurrentForm(formId);
+  toast('Formulir siap dicetak');
+}
+function printCurrentForm(formId){
+  const form = document.getElementById('formIsi');
+  if(!form){ toast('Tampilkan formulir dulu'); return; }
+  const fd = new FormData(form);
+  const formDef = FORMS.find(f=>f.id===formId);
+  let html = `<h1>${formId} | ${formDef.title.toUpperCase()}</h1>
+    <p class="meta">UPT RSDSN dan AMPK Malang &nbsp;|&nbsp; ${fmtDate(new Date().toISOString().slice(0,10))}</p>`;
+  (FORM_FIELDS[formId]||[]).forEach(sec=>{
+    html += `<h2>${sec.sec}</h2><table>`;
+    sec.fields.forEach(([name,label,type])=>{
+      const val = type==='check' ? (fd.get(name)?'Ya':'Tidak') : (fd.get(name)||'-');
+      html += `<tr><th style="width:40%">${label}</th><td>${esc(val)}</td></tr>`;
+    });
+    html += `</table>`;
+  });
+  const sel = document.getElementById('petugasSelect');
+  const petVal = sel && sel.value ? sel.value.split('|') : ['',''];
+  const petNama = petVal[0] || '................................';
+  const petNip = petVal[1] || '................';
+  const pj = pejabat.kepalaUPT || {};
+  html += `<div class="sign"><table style="border:none"><tr>
+    <td style="border:none;text-align:center">Petugas<br><br><br>(${esc(petNama)})<br>NIP. ${esc(petNip)}</td>
+    <td style="border:none;text-align:center">Mengetahui,<br>${esc(pj.jabatan||'Kepala UPT')}<br><br>(${esc(pj.nama||'................................')})<br>NIP. ${esc(pj.nip||'................')}</td>
+  </tr></table></div>`;
+  openPrintWindow(html, formId);
+}
+
+function printForm(formId){
+  const form = FORMS.find(f=>f.id===formId);
+  if(!form) return;
+  openPrintWindow(`<h1>${form.id} | ${form.title}</h1><p>Formulir kosong. Isi melalui menu Formulir Layanan.</p>`, form.id);
+}
+function printFormForPM(){ toast('Gunakan bagian Isi Formulir di atas'); }
+function printAllForms(){
+  let html = '<h1>REKAP FORMULIR LAYANAN</h1>';
+  FORMS.forEach(f=> html += `<h2>${f.id} — ${f.title}</h2><p>(lihat formulir individual)</p><hr>`);
+  openPrintWindow(html, 'Rekap_Formulir');
+}
+function openPrintWindow(html, title){
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${title}</title>
+  <style>body{font-family:Arial,sans-serif;font-size:11pt;margin:20px} h1{font-size:14pt;text-align:center} h2{font-size:12pt;border-bottom:1px solid #333;padding-bottom:4px} table{border-collapse:collapse;width:100%;margin:8px 0} th,td{border:1px solid #333;padding:6px 8px} th{background:#f0f0f0} .sign td{border:none;text-align:center} @media print{body{margin:0}}</style>
+  </head><body>${html}</body></html>`);
+  w.document.close();
+  setTimeout(()=>w.print(), 300);
+}
+
+/* ---------- DATA PEGAWAI ---------- */
+const PEGAWAI_SEED = [{"nama": "Anantya Wulandari, S.Sos., M.Si.", "nip": "198609052011012014", "pangkat": "Pembina / (IVa)", "jabatan": "Kepala UPT", "unit": "UPT RSDSN & AMPK", "status": "PNS"}, {"nama": "Helmi Kurniawan, S.E.", "nip": "197911212009031002", "pangkat": "Penata Muda Tk. I / (III/b)", "jabatan": "Kepala Sub Bagian Tata Usaha", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Mustakim", "nip": "197707192008011012", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengadministrasi Perkantoran", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Nurmasari, Amd", "nip": "199409222025042005", "pangkat": "Pengatur / (II/c)", "jabatan": "Penata Laksana Barang Terampil", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Nevi Yunitasari, A.Md.AK", "nip": "199704092025042008", "pangkat": "Pengatur / (II/c)", "jabatan": "Penata Laksana Barang Terampil", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Aina Anggraeni, A.Md.Ak.", "nip": "19990724 202504 2 010", "pangkat": "Pengatur / (II/c)", "jabatan": "Penata Laksana Barang Terampil", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Khoirin Aideksa Falantino, A.Md.Ak.", "nip": "20020310 202504 2 007", "pangkat": "Pengatur / (II/c)", "jabatan": "Penata Laksana Barang Terampil", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Rofi Anama Putra", "nip": "19770506 201001 1 004", "pangkat": "Pengatur / (II/c)", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Joko Sulianto", "nip": "19771027 200901 1 009", "pangkat": "Pengatur Muda- II/a", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Jainul Arifin, S.M.", "nip": "19831118 200901 1 003", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengadministrasi Perkantoran", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Ari Wahyudi, S.E.", "nip": "199202262025211004", "pangkat": "IX", "jabatan": "Penata Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "PPPK"}, {"nama": "Mohamad Risqi Indrayana, S. Sos, M. M", "nip": "19911217 202521 1 007", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "PPPK"}, {"nama": "Miswandi", "nip": "198106182009011005", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengolah Data dan Informasi", "unit": "Sub Bagian Tata Usaha", "status": "PNS"}, {"nama": "Slamet Nuriadi", "nip": "197010212025211021", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "Sugiono", "nip": "198004242025211096", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "Rudi Feriyanto", "nip": "198402292025211065", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "R. Sapto Winarno", "nip": "197704162025211056", "pangkat": "-", "jabatan": "Pengelola Umum Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "Lauda Vinca Dasanta, S. S.", "nip": "19940914 202521 2 110", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "Fathoni Darmawan", "nip": "19780211 202521 1 034", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "Muhamad", "nip": "19730501 202521 1 039", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "Surya Adi Utama", "nip": "19890101 202521 1 277", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "Moch. Anwar", "nip": "19920602 202521 1 147", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "Rudy Wijayanto", "nip": "198310262025211069", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "Sub Bagian Tata Usaha", "status": "-"}, {"nama": "Siti Zulaifah, S.E.", "nip": "19690913 199501 2 001", "pangkat": "III/d - Penata Tingkat I", "jabatan": "KEPALA SEKSI PELYANAN SOSIAL", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Ridwan", "nip": "197004122008011015", "pangkat": "Penata Muda / (III/a)", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Titut Eko Yulianto", "nip": "198107032009011005", "pangkat": "Penata Muda / (III/a)", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Rena Cintia Dewi", "nip": "198205202009012001", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengolah Data dan Informasi", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Eko Julianto", "nip": "197607232009011002", "pangkat": "Penata Muda / (III/a)", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Nurul Hidayati, S.Sos.", "nip": "198004302010012001", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengolah Data dan Informasi", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Nurul Hidayah", "nip": "197707112009012002", "pangkat": "Pengatur Tk. I / (II/d)", "jabatan": "Pengelola Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Prapti", "nip": "197204062008012018", "pangkat": "Pengatur Tk. I / (II/d)", "jabatan": "Pengelola Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Marnianto", "nip": "198303152010011005", "pangkat": "Pengatur Tk. I / (II/d)", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Mujianto", "nip": "198411012009011002", "pangkat": "Pengatur / (II/c)", "jabatan": "Pengolah Data dan Informasi", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Anggei Wulandari, A.Md.AK", "nip": "199708012025042010", "pangkat": "Pengatur / (II/c)", "jabatan": "Pengelola Layanan Kesehatan", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Djurijono", "nip": "196901012009011004", "pangkat": "Pengatur Muda / (II/a)", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Sarjiono", "nip": "197708132009011004", "pangkat": "Pengatur Muda / (II/a)", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Muslimin, S.A.P.", "nip": "19731229 200801 1 005", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengolah Data dan Informasi", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Slamet Basuki", "nip": "19740906 199903 1 005", "pangkat": "Penata Muda Tingkat I / (III/b)", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "PNS"}, {"nama": "Anggi Dika Ulandari", "nip": "199611082025212093", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Sri Wahyu Pusponegoro", "nip": "200007242025212047", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Siti Rahayu Ningsih", "nip": "198303162025212053", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Abdul Wahid", "nip": "198106102025211119", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Eli Sri Mujiati", "nip": "198907152025212114", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Abdul Kholiq, S.H.", "nip": "19740725 202521 1 052", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Indras Moro", "nip": "19800502 202521 1 089", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Siva Yuli Maulida", "nip": "20000712 202521 2 060", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Warsini", "nip": "19780819 202521 2 030", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Kusdiana Diah Anasta, S.E.", "nip": "19740921 202521 2 022", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "PELAYANAN SOSIAL", "status": "-"}, {"nama": "Sulistyoningsih, A.Ks,M.Si.", "nip": "19740415 199803 2 007", "pangkat": "Pembina / ( IV/a)", "jabatan": "KEPALA SEKSI", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Pipin Naomi Mattea", "nip": "196908281992022002", "pangkat": "Penata Tk. I / (III/d)", "jabatan": "Pekerja Sosial Penyelia", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Ken Edy Widjaja", "nip": "197507022010011005", "pangkat": "Pengatur / (II/c)", "jabatan": "Pekerja Sosial Terampil", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Iwit Hariyanti, S. Sos.", "nip": "197012281998032004", "pangkat": "Penata Tk. I / (III/d)", "jabatan": "Penelaah Teknis Kebijakan", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Wiwid Agus Sutriyono", "nip": "196908241999031007", "pangkat": "Penata Muda Tk. I / (III/b)", "jabatan": "Penelaah Teknis Kebijakan", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Tetri Nabila Nurbaiti, S.Tr.Sos.", "nip": "199605212022042001", "pangkat": "Penata Muda Tk. I / (III/b)", "jabatan": "Pekerja Sosial Ahli Pertama", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Sulistiowati, S.M.", "nip": "19840101 201001 2 004", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengolah Data dan Informasi", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Hadi", "nip": "197410052009011003", "pangkat": "Penata Muda / (III/a)", "jabatan": "Penelaah Teknis Kebijakan", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Lilik Dwi Lestari", "nip": "197611292010012002", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengadministrasi Perkantoran", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Ahmat Choiri", "nip": "198211072010011005", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengadministrasi Perkantoran", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Ratemuji", "nip": "19731014 200901 1 001", "pangkat": "Pengatur Tingkat I -(II/d )", "jabatan": "Pengadministrasi Perkantoran", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Jutrianto, S.A.P.", "nip": "19820626 200901 1 006", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengadministrasi Perkantoran", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Merielle Yuditha Canary, S.Pd., M.Kesos.", "nip": "19870716 202012 2 010", "pangkat": "Penata Muda Tingkat I / (III/b)", "jabatan": "Widyaiswara Keahlian Ahli Pertama (III/b)", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Arif Dwi Nanta Putra, S.A.P.", "nip": "19810512 201001 1 001", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengadministrasi Perkantoran", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Samuji, S.A.P.", "nip": "19831231 200901 1 006", "pangkat": "Penata Muda / (III/a)", "jabatan": "Pengolah Data dan Informasi", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Siti Rofikhoh, S.Ag.", "nip": "19730425 201412 2 002", "pangkat": "Penata / (III/c)", "jabatan": "Pengolah Data dan Informasi", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PNS"}, {"nama": "Dina Muliana Sari, S.Pt", "nip": "19810828 202521 2 006", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "PPPK"}, {"nama": "Lailiel Moeflichah, SE", "nip": "197208122025212021", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Zaki Firmansyah, S.Psi.", "nip": "198203022025211112", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Wahyu Sukmajati, S.Kom.", "nip": "198404042025211157", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Adimas Suryansyah, S.Sos.", "nip": "199106222025211094", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Hariyono", "nip": "197209132025211029", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Wahyu Feri Eka Wijaya", "nip": "198702022025211180", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Aris Sudarmanto", "nip": "198512182025211088", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Megisteria Kaleby", "nip": "199809042025212097", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Azzahrah Mumtaz Firdaus", "nip": "200206212025212010", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Aldion Ebenheazer Medellu", "nip": "199709092025211130", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Suwono", "nip": "19730709 202521 1 037", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "PERLINDUNGAN DAN REHABILITASI SOSIAL", "status": "-"}, {"nama": "Dian Bagus Aryanto, S.Psi", "nip": "19770401 202521 1 078", "pangkat": "-", "jabatan": "Penata Layanan Operasional", "unit": "", "status": "-"}, {"nama": "Umi Fitriani", "nip": "19910417 202521 2 127", "pangkat": "-", "jabatan": "Operator Layanan Operasional", "unit": "", "status": "-"}];
+function loadPegawai(){
+  try{ const p = JSON.parse(safeStorage.getItem('sipm_pegawai')||'null'); if(p&&p.length) return p; }catch(e){}
+  return PEGAWAI_SEED;
+}
+function savePegawai(list){ safeStorage.setItem('sipm_pegawai', JSON.stringify(list)); }
+let pegawaiList = loadPegawai();
+
+function loadPejabat(){
+  try{ const p = JSON.parse(safeStorage.getItem('sipm_pejabat')||'null'); if(p) return p; }catch(e){}
+  return {
+    kepalaUPT: {nama:'Anantya Wulandari, S.Sos., M.Si.', nip:'198609052011012014', jabatan:'Kepala UPT RSDSN & AMPK Malang'},
+    kasiePelayanan: {nama:'Siti Zulaifah, S.E.', nip:'19690913 199501 2 001', jabatan:'Kepala Seksi Pelayanan Sosial'},
+    kasiePerlindungan: {nama:'Sulistyoningsih, A.Ks,M.Si.', nip:'19740415 199803 2 007', jabatan:'Kepala Seksi Perlindungan dan Rehabilitasi Sosial'}
+  };
+}
+function savePejabat(p){ safeStorage.setItem('sipm_pejabat', JSON.stringify(p)); }
+let pejabat = loadPejabat();
+
+function viewPegawai(){
+  const q = (filterState.q||'').toLowerCase();
+  const filtered = pegawaiList.filter(p=>!q || (p.nama+' '+p.nip+' '+p.jabatan+' '+p.unit).toLowerCase().includes(q));
+  return `
+  <div class="page-head"><h2>Data Pegawai</h2><p>Daftar pegawai UPT RSDSN & AMPK Malang. Digunakan untuk pemilihan petugas dan pejabat penandatangan.</p></div>
+  <div class="card">
+    <p class="card-title">Pejabat Penandatangan</p>
+    <p class="card-sub">Atur nama, NIP, dan jabatan pejabat yang menandatangani formulir.</p>
+    <form onsubmit="savePejabatForm(event)">
+      <div class="form-grid">
+        <div class="field"><label>Kepala UPT — Nama</label><input type="text" name="kupt_nama" value="${esc(pejabat.kepalaUPT.nama)}"></div>
+        <div class="field"><label>NIP</label><input type="text" name="kupt_nip" value="${esc(pejabat.kepalaUPT.nip)}"></div>
+        <div class="field full"><label>Jabatan</label><input type="text" name="kupt_jabatan" value="${esc(pejabat.kepalaUPT.jabatan)}"></div>
+        <div class="field"><label>Kasie Pelayanan Sosial — Nama</label><input type="text" name="kps_nama" value="${esc(pejabat.kasiePelayanan.nama)}"></div>
+        <div class="field"><label>NIP</label><input type="text" name="kps_nip" value="${esc(pejabat.kasiePelayanan.nip)}"></div>
+        <div class="field full"><label>Jabatan</label><input type="text" name="kps_jabatan" value="${esc(pejabat.kasiePelayanan.jabatan)}"></div>
+        <div class="field"><label>Kasie Perlindungan & Rehabilitasi — Nama</label><input type="text" name="kpr_nama" value="${esc(pejabat.kasiePerlindungan.nama)}"></div>
+        <div class="field"><label>NIP</label><input type="text" name="kpr_nip" value="${esc(pejabat.kasiePerlindungan.nip)}"></div>
+        <div class="field full"><label>Jabatan</label><input type="text" name="kpr_jabatan" value="${esc(pejabat.kasiePerlindungan.jabatan)}"></div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn ghost" onclick="setView('pegawai')">Batal</button><button type="submit" class="btn primary">Simpan Pejabat</button></div>
+    </form>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:10px">
+      <p class="card-title" style="margin:0">Daftar Pegawai (${pegawaiList.length})</p>
+      <button class="btn primary sm" onclick="showAddPegawai()">+ Tambah Pegawai</button>
+    </div>
+    <div class="toolbar">
+      <div class="search"><input type="text" placeholder="Cari nama, NIP, jabatan..." value="${esc(filterState.q||'')}" oninput="filterState.q=this.value; render()"></div>
+    </div>
+    <div id="addPegawaiForm" class="hidden" style="margin-bottom:14px;padding:14px;background:#F8FAFC;border-radius:10px">
+      <p style="font-weight:700;margin:0 0 10px">Tambah / Edit Pegawai</p>
+      <form onsubmit="savePegawaiForm(event)">
+        <input type="hidden" name="editIndex" id="editIndex" value="-1">
+        <div class="form-grid">
+          <div class="field"><label>Nama Lengkap <span class="req">*</span></label><input type="text" name="nama" id="pgNama" required></div>
+          <div class="field"><label>NIP</label><input type="text" name="nip" id="pgNip"></div>
+          <div class="field"><label>Pangkat / Golongan</label><input type="text" name="pangkat" id="pgPangkat"></div>
+          <div class="field"><label>Jabatan</label><input type="text" name="jabatan" id="pgJabatan"></div>
+          <div class="field"><label>Unit Kerja</label><input type="text" name="unit" id="pgUnit"></div>
+          <div class="field"><label>Status</label>
+            <select name="status" id="pgStatus"><option value="PNS">PNS</option><option value="PPPK">PPPK</option><option value="-">Lainnya</option></select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn ghost" onclick="hideAddPegawai()">Batal</button>
+          <button type="submit" class="btn primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>No</th><th>Nama</th><th>NIP</th><th>Jabatan</th><th>Unit Kerja</th><th>Status</th><th>Aksi</th></tr></thead>
+      <tbody>${filtered.map((p,i)=>`<tr>
+        <td>${i+1}</td>
+        <td><b>${esc(p.nama)}</b></td>
+        <td>${esc(p.nip)}</td>
+        <td>${esc(p.jabatan)}</td>
+        <td>${esc(p.unit)}</td>
+        <td><span class="tag ${p.status==='PNS'?'ok':'blue'}">${p.status}</span></td>
+        <td style="white-space:nowrap">
+          <button class="btn sm" onclick="editPegawai(${pegawaiList.indexOf(p)})">Edit</button>
+          <button class="btn danger sm" onclick="deletePegawai(${pegawaiList.indexOf(p)})">Hapus</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+  </div>`;
+}
+function savePejabatForm(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  pejabat = {
+    kepalaUPT: {nama:fd.get('kupt_nama'), nip:fd.get('kupt_nip'), jabatan:fd.get('kupt_jabatan')},
+    kasiePelayanan: {nama:fd.get('kps_nama'), nip:fd.get('kps_nip'), jabatan:fd.get('kps_jabatan')},
+    kasiePerlindungan: {nama:fd.get('kpr_nama'), nip:fd.get('kpr_nip'), jabatan:fd.get('kpr_jabatan')}
+  };
+  savePejabat(pejabat);
+  toast('Data pejabat tersimpan');
+  setView('pegawai');
+}
+function showAddPegawai(){
+  document.getElementById('addPegawaiForm').classList.remove('hidden');
+  document.getElementById('editIndex').value = '-1';
+  document.getElementById('pgNama').value = '';
+  document.getElementById('pgNip').value = '';
+  document.getElementById('pgPangkat').value = '';
+  document.getElementById('pgJabatan').value = '';
+  document.getElementById('pgUnit').value = '';
+  document.getElementById('pgStatus').value = 'PNS';
+}
+function hideAddPegawai(){
+  document.getElementById('addPegawaiForm').classList.add('hidden');
+}
+function editPegawai(idx){
+  const p = pegawaiList[idx];
+  if(!p) return;
+  document.getElementById('addPegawaiForm').classList.remove('hidden');
+  document.getElementById('editIndex').value = idx;
+  document.getElementById('pgNama').value = p.nama||'';
+  document.getElementById('pgNip').value = p.nip||'';
+  document.getElementById('pgPangkat').value = p.pangkat||'';
+  document.getElementById('pgJabatan').value = p.jabatan||'';
+  document.getElementById('pgUnit').value = p.unit||'';
+  document.getElementById('pgStatus').value = p.status||'PNS';
+  document.getElementById('addPegawaiForm').scrollIntoView({behavior:'smooth'});
+}
+function savePegawaiForm(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const idx = parseInt(fd.get('editIndex'),10);
+  const item = {
+    nama: fd.get('nama').trim(),
+    nip: fd.get('nip')||'',
+    pangkat: fd.get('pangkat')||'',
+    jabatan: fd.get('jabatan')||'',
+    unit: fd.get('unit')||'',
+    status: fd.get('status')||'PNS'
+  };
+  if(idx >= 0 && idx < pegawaiList.length){
+    pegawaiList[idx] = item;
+    toast('Data pegawai diperbarui');
+  }else{
+    pegawaiList.push(item);
+    toast('Pegawai baru ditambahkan');
+  }
+  savePegawai(pegawaiList);
+  setView('pegawai');
+}
+function deletePegawai(idx){
+  const p = pegawaiList[idx];
+  if(!p) return;
+  if(!confirm('Hapus pegawai "'+p.nama+'"?')) return;
+  pegawaiList.splice(idx,1);
+  savePegawai(pegawaiList);
+  toast('Pegawai dihapus');
+  setView('pegawai');
+}
+
+
+/* ---------- MANAJEMEN ROLE ---------- */
+const ROLES = {
+  admin: {nama:'Admin', desc:'Akses penuh: kelola data, pegawai, role, dan pengaturan', akses:['semua']},
+  petugas: {nama:'Petugas', desc:'Input dan edit data PM, isi formulir, cetak laporan', akses:['pm','formulir','laporan']},
+  viewer: {nama:'Viewer', desc:'Hanya melihat data dan mencetak laporan', akses:['lihat','laporan']}
+};
+function loadRole(){
+  return safeStorage.getItem('sipm_role') || 'admin';
+}
+function saveRole(r){ safeStorage.setItem('sipm_role', r); }
+let currentRole = loadRole();
+
+function viewRoles(){
+  return `
+  <div class="page-head"><h2>Manajemen Hak Akses Role</h2><p>Atur peran pengguna yang sedang login. Perubahan berlaku setelah disimpan.</p></div>
+  <div class="card">
+    <p class="card-title">Role Aktif: <span class="tag ok">${ROLES[currentRole]?.nama||currentRole}</span></p>
+    <form onsubmit="saveRoleForm(event)">
+      <div class="form-grid">
+        ${Object.entries(ROLES).map(([k,v])=>`
+          <div class="field full" style="flex-direction:row;align-items:flex-start;gap:10px">
+            <input type="radio" name="role" value="${k}" id="role-${k}" ${currentRole===k?'checked':''} style="margin-top:4px">
+            <label for="role-${k}" style="cursor:pointer">
+              <b>${v.nama}</b><br>
+              <span class="small muted">${v.desc}</span>
+            </label>
+          </div>
+        `).join('')}
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn ghost" onclick="setView('dashboard')">Batal</button>
+        <button type="submit" class="btn primary">Simpan Role</button>
+      </div>
+    </form>
+  </div>
+  <div class="card">
+    <p class="card-title">Keterangan Hak Akses</p>
+    <ul class="menu-list" style="grid-template-columns:1fr">
+      <li><span class="n">1</span> <b>Admin</b> — dapat menambah, mengubah, menghapus data PM, pegawai, pejabat, dan mengubah role.</li>
+      <li><span class="n">2</span> <b>Petugas</b> — dapat mengisi data PM, formulir, dan mencetak laporan. Tidak dapat menghapus data atau mengubah role.</li>
+      <li><span class="n">3</span> <b>Viewer</b> — hanya dapat melihat data dan mencetak laporan. Tidak dapat mengubah apa pun.</li>
+    </ul>
+  </div>`;
+}
+function saveRoleForm(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  currentRole = fd.get('role') || 'admin';
+  saveRole(currentRole);
+  toast('Role diubah menjadi ' + (ROLES[currentRole]?.nama||currentRole));
+  const rn = document.getElementById('roleName');
+  if(rn) rn.textContent = ROLES[currentRole]?.nama || currentRole;
+  setView('roles');
+}
+function hasAccess(action){
+  if(currentRole==='admin') return true;
+  const akses = ROLES[currentRole]?.akses || [];
+  if(akses.includes('semua')) return true;
+  if(action==='hapus' || action==='role') return false;
+  if(action==='edit' && currentRole==='viewer') return false;
+  return true;
+}
+
+
+/* ---------- LOGIN & USER MANAGEMENT ---------- */
+function loadUsers(){
+  try{ const u = JSON.parse(safeStorage.getItem('sipm_users')||'null'); if(u&&u.length) return u; }catch(e){}
+  return [
+    {username:'admin', password:'admin123', nama:'Admin Penerimaan', tipe:'fasilitator', role:'admin', aktif:true},
+    {username:'petugas', password:'petugas123', nama:'Petugas Layanan', tipe:'personal', role:'petugas', aktif:true}
+  ];
+}
+function saveUsers(list){ safeStorage.setItem('sipm_users', JSON.stringify(list)); }
+let usersList = loadUsers();
+let loggedInUser = null;
+
+function doLogin(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const uname = fd.get('username').trim();
+  const pw = fd.get('password');
+  const user = usersList.find(u=>u.username===uname && u.password===pw && u.aktif);
+  if(!user){ toast('Username atau password salah'); return; }
+  loggedInUser = user;
+  currentUser = user;
+  currentRole = user.role || 'petugas';
+  saveRole(currentRole);
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('landing').classList.remove('hidden');
+  const pn = document.getElementById('petugasName');
+  if(pn) pn.textContent = user.nama;
+  const rn = document.getElementById('roleName');
+  if(rn) rn.textContent = ROLES[currentRole]?.nama || currentRole;
+  toast('Selamat datang, ' + user.nama);
+}
+function doLogout(){
+  loggedInUser = null;
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  toast('Anda telah keluar');
+}
+
+function viewUsers(){
+  if(currentRole!=='admin') return '<div class="card"><p>Hanya Admin yang dapat mengelola user.</p></div>';
+  return `
+  <div class="page-head"><h2>Manajemen User</h2><p>Tambah user personal atau fasilitator. Batasi akses dengan role dan status aktif.</p></div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <p class="card-title" style="margin:0">Daftar User</p>
+      <button class="btn primary sm" onclick="showAddUser()">+ Tambah User</button>
+    </div>
+    <div id="addUserForm" class="hidden" style="margin:12px 0;padding:14px;background:#F8FAFC;border-radius:10px">
+      <form onsubmit="saveUserForm(event)">
+        <input type="hidden" name="editIdx" id="userEditIdx" value="-1">
+        <div class="form-grid">
+          <div class="field"><label>Username <span class="req">*</span></label><input type="text" name="username" id="uUsername" required></div>
+          <div class="field"><label>Password <span class="req">*</span></label><input type="text" name="password" id="uPassword" required></div>
+          <div class="field"><label>Nama Lengkap</label><input type="text" name="nama" id="uNama"></div>
+          <div class="field"><label>Tipe</label>
+            <select name="tipe" id="uTipe"><option value="personal">Personal</option><option value="fasilitator">Fasilitator</option></select>
+          </div>
+          <div class="field"><label>Role</label>
+            <select name="role" id="uRole"><option value="admin">Admin</option><option value="petugas">Petugas</option><option value="viewer">Viewer</option></select>
+          </div>
+          <div class="field inline"><input type="checkbox" name="aktif" id="uAktif" checked><label for="uAktif">Aktif</label></div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn ghost" onclick="document.getElementById('addUserForm').classList.add('hidden')">Batal</button>
+          <button type="submit" class="btn primary">Simpan User</button>
+        </div>
+      </form>
+    </div>
+    <div class="table-wrap" style="margin-top:12px"><table>
+      <thead><tr><th>Username</th><th>Nama</th><th>Tipe</th><th>Role</th><th>Status</th><th>Aksi</th></tr></thead>
+      <tbody>${usersList.map((u,i)=>`<tr>
+        <td><b>${esc(u.username)}</b></td>
+        <td>${esc(u.nama||'-')}</td>
+        <td><span class="tag ${u.tipe==='fasilitator'?'ampk':'rsdsn'}">${u.tipe}</span></td>
+        <td><span class="tag ${u.role==='admin'?'ok':u.role==='petugas'?'blue':'gray'}">${u.role}</span></td>
+        <td>${u.aktif?'<span class="tag ok">Aktif</span>':'<span class="tag bad">Nonaktif</span>'}</td>
+        <td style="white-space:nowrap">
+          <button class="btn sm" onclick="editUser(${i})">Edit</button>
+          ${u.username!=='admin'?`<button class="btn danger sm" onclick="deleteUser(${i})">Hapus</button>`:''}
+        </td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+  </div>
+  <div class="card">
+    <p class="card-title">Pembatasan Akses</p>
+    <ul class="menu-list" style="grid-template-columns:1fr">
+      <li><span class="n">1</span> <b>Personal</b> — user biasa, hak akses sesuai role yang diberikan.</li>
+      <li><span class="n">2</span> <b>Fasilitator</b> — user pendamping, biasanya role Petugas atau Viewer.</li>
+      <li><span class="n">3</span> User dengan status <b>Nonaktif</b> tidak dapat login.</li>
+      <li><span class="n">4</span> Hanya <b>Admin</b> yang dapat menambah, mengubah, atau menghapus user.</li>
+    </ul>
+  </div>`;
+}
+function showAddUser(){
+  document.getElementById('addUserForm').classList.remove('hidden');
+  document.getElementById('userEditIdx').value = '-1';
+  document.getElementById('uUsername').value = '';
+  document.getElementById('uPassword').value = '';
+  document.getElementById('uNama').value = '';
+  document.getElementById('uTipe').value = 'personal';
+  document.getElementById('uRole').value = 'petugas';
+  document.getElementById('uAktif').checked = true;
+}
+function editUser(idx){
+  const u = usersList[idx];
+  if(!u) return;
+  document.getElementById('addUserForm').classList.remove('hidden');
+  document.getElementById('userEditIdx').value = idx;
+  document.getElementById('uUsername').value = u.username;
+  document.getElementById('uPassword').value = u.password;
+  document.getElementById('uNama').value = u.nama||'';
+  document.getElementById('uTipe').value = u.tipe||'personal';
+  document.getElementById('uRole').value = u.role||'petugas';
+  document.getElementById('uAktif').checked = !!u.aktif;
+}
+function saveUserForm(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const idx = parseInt(fd.get('editIdx'),10);
+  const item = {
+    username: fd.get('username').trim(),
+    password: fd.get('password'),
+    nama: fd.get('nama')||'',
+    tipe: fd.get('tipe'),
+    role: fd.get('role'),
+    aktif: !!fd.get('aktif')
+  };
+  if(idx >= 0){ usersList[idx] = item; toast('User diperbarui'); }
+  else { usersList.push(item); toast('User ditambahkan'); }
+  saveUsers(usersList);
+  setView('users');
+}
+function deleteUser(idx){
+  if(!confirm('Hapus user ini?')) return;
+  usersList.splice(idx,1);
+  saveUsers(usersList);
+  toast('User dihapus');
+  setView('users');
+}
+
+
+/* ---------- LUPA PASSWORD & APPROVAL ---------- */
+function showForgotPassword(){
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('forgotScreen').classList.remove('hidden');
+}
+function hideForgotPassword(){
+  document.getElementById('forgotScreen').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('forgotResult').classList.add('hidden');
+}
+function doForgotPassword(e){
+  e.preventDefault();
+  const uname = new FormData(e.target).get('username').trim();
+  const user = usersList.find(u=>u.username===uname);
+  const res = document.getElementById('forgotResult');
+  if(!user){
+    res.innerHTML = '<span style="color:#991B1B">Username tidak ditemukan.</span>';
+  }else{
+    const newPw = 'reset' + Math.floor(1000+Math.random()*9000);
+    user.password = newPw;
+    saveUsers(usersList);
+    res.innerHTML = 'Password baru untuk <b>'+esc(uname)+'</b>:<br><code style="font-size:1.1rem;background:#fff;padding:4px 8px;border-radius:4px">'+newPw+'</code><br><span class="small">Silakan login dan ganti password di Setting.</span>';
+  }
+  res.classList.remove('hidden');
+}
+
+/* Multi-level Approval */
+function loadApprovals(){
+  try{ return JSON.parse(safeStorage.getItem('sipm_approvals')||'[]'); }catch(e){ return []; }
+}
+function saveApprovals(list){ safeStorage.setItem('sipm_approvals', JSON.stringify(list)); }
+let approvals = loadApprovals();
+
+function requestApproval(pmId, action, detail){
+  approvals.push({
+    id: 'APR-'+Date.now(),
+    pmId, action, detail,
+    requestedBy: loggedInUser?.username || 'unknown',
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  });
+  saveApprovals(approvals);
+  toast('Permintaan approval dikirim');
+}
+function viewApprovals(){
+  if(currentRole!=='admin') return '<div class="card"><p>Hanya Admin yang dapat melihat approval.</p></div>';
+  const pending = approvals.filter(a=>a.status==='pending');
+  return `
+  <div class="page-head"><h2>Multi-level Approval</h2><p>Permintaan perubahan yang menunggu persetujuan Admin.</p></div>
+  <div class="card">
+    <p class="card-title">Antrian Approval (${pending.length})</p>
+    ${pending.length?`<div class="table-wrap"><table>
+      <thead><tr><th>ID</th><th>PM</th><th>Aksi</th><th>Detail</th><th>Oleh</th><th>Aksi</th></tr></thead>
+      <tbody>${pending.map(a=>{
+        const pm = getPM(a.pmId);
+        return `<tr>
+          <td>${a.id}</td>
+          <td>${pm?esc(pm.identitas.namaLengkap):a.pmId}</td>
+          <td>${esc(a.action)}</td>
+          <td class="small">${esc(a.detail||'-')}</td>
+          <td>${esc(a.requestedBy)}</td>
+          <td>
+            <button class="btn success sm" onclick="approveRequest('${a.id}')">Setujui</button>
+            <button class="btn danger sm" onclick="rejectRequest('${a.id}')">Tolak</button>
+          </td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`:'<p class="muted">Tidak ada permintaan approval.</p>'}
+  </div>
+  <div class="card">
+    <p class="card-title">Riwayat</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>ID</th><th>Aksi</th><th>Status</th><th>Tanggal</th></tr></thead>
+      <tbody>${approvals.slice().reverse().slice(0,20).map(a=>`<tr>
+        <td>${a.id}</td><td>${esc(a.action)}</td>
+        <td><span class="tag ${a.status==='approved'?'ok':a.status==='rejected'?'bad':'warn'}">${a.status}</span></td>
+        <td class="small">${a.createdAt.slice(0,10)}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+  </div>`;
+}
+function approveRequest(id){
+  const a = approvals.find(x=>x.id===id);
+  if(!a) return;
+  a.status = 'approved';
+  a.approvedBy = loggedInUser?.username || 'admin';
+  a.approvedAt = new Date().toISOString();
+  saveApprovals(approvals);
+  toast('Permintaan disetujui');
+  setView('approvals');
+}
+function rejectRequest(id){
+  const a = approvals.find(x=>x.id===id);
+  if(!a) return;
+  a.status = 'rejected';
+  a.rejectedBy = loggedInUser?.username || 'admin';
+  saveApprovals(approvals);
+  toast('Permintaan ditolak');
+  setView('approvals');
+}
+
+/* ---------- INIT ---------- */
+document.querySelectorAll('.sb-item').forEach(b=>{
+  b.addEventListener('click', ()=>{ currentPMId=null; window.editModeId=null; setView(b.dataset.view); });
+});
+// Initial petugas name and role
+const pn = document.getElementById('petugasName');
+if(pn) pn.textContent = currentUser.nama || 'Admin Penerimaan';
+const rn = document.getElementById('roleName');
+if(rn) rn.textContent = ROLES[currentRole]?.nama || currentRole;
+applyBackground();
+if(pn) pn.textContent = currentUser.nama || 'Admin Penerimaan';
+
+// If user previously selected a mode, auto-enter app
+if(MODE && MODE!=='ALL' && safeStorage.getItem('sipm_seen_landing')==='1'){
+  // stay on landing by default; user clicks a card
+}
+
+</script>
+</body>
+</html>
